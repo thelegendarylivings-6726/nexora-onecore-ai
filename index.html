@@ -3,295 +3,621 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexora OneCore AI | Automate Operations. Accelerate Revenue.</title>
-<meta name="description" content="Nexora OneCore AI builds intelligent AI automation and business operations solutions for companies worldwide.">
+
+<title>Nexora OneCore AI | Autonomous AI Business Execution</title>
+<meta name="description" content="Nexora OneCore AI builds intelligent AI agents and automation systems for business operations, revenue, customer experience and enterprise workflows.">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:#050914;
+  background:
+    radial-gradient(circle at 50% 10%,#10245e 0%,#071126 25%,#020611 55%,#000 100%);
   color:#fff;
-  line-height:1.6;
+  overflow-x:hidden;
 }
+
+/* BACKGROUND */
+.grid{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  background-image:
+    linear-gradient(rgba(57,142,255,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(57,142,255,.06) 1px,transparent 1px);
+  background-size:45px 45px;
+  transform:perspective(500px) rotateX(60deg) scale(2);
+  transform-origin:center bottom;
+  opacity:.4;
+}
+
+.glow{
+  position:fixed;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:#146cff;
+  filter:blur(150px);
+  opacity:.12;
+  top:10%;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:-2;
+}
+
+/* NAV */
 nav{
+  width:100%;
   padding:20px 7%;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #17233b;
-  position:sticky;
+  position:fixed;
   top:0;
-  background:rgba(5,9,20,.95);
+  z-index:50;
+  backdrop-filter:blur(18px);
+  background:rgba(2,6,17,.55);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
+
 .logo{
-  font-size:22px;
-  font-weight:800;
-  color:#4dd8ff;
+  font-weight:900;
+  letter-spacing:2px;
+  font-size:20px;
 }
+
+.logo span{
+  color:#52a7ff;
+}
+
+nav .links{
+  display:flex;
+  gap:25px;
+}
+
 nav a{
-  color:#fff;
+  color:#cdd9ef;
   text-decoration:none;
-  margin-left:20px;
   font-size:14px;
 }
+
+/* HERO */
 .hero{
-  min-height:85vh;
+  min-height:100vh;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  padding:70px 8%;
-  background:
-  radial-gradient(circle at top,#102d55 0%,#050914 55%);
+  padding:130px 7% 70px;
+  position:relative;
 }
+
+.hero-content{
+  max-width:1000px;
+  position:relative;
+  z-index:5;
+}
+
 .badge{
-  border:1px solid #1f8fff;
-  color:#61d8ff;
-  padding:8px 18px;
+  display:inline-block;
+  border:1px solid rgba(82,167,255,.45);
+  background:rgba(34,109,255,.09);
+  padding:9px 17px;
   border-radius:30px;
+  font-size:12px;
+  letter-spacing:2px;
+  color:#8fc8ff;
   margin-bottom:25px;
 }
+
 .hero h1{
-  font-size:clamp(45px,8vw,90px);
-  line-height:1;
-  background:linear-gradient(90deg,#fff,#48cfff);
+  font-size:clamp(55px,11vw,135px);
+  line-height:.85;
+  letter-spacing:-5px;
+  font-weight:900;
+  background:linear-gradient(180deg,#fff 15%,#9fc8ff 55%,#3b77ff 100%);
   -webkit-background-clip:text;
   color:transparent;
+  text-shadow:0 25px 80px rgba(28,111,255,.25);
 }
+
 .hero h2{
-  font-size:clamp(22px,4vw,42px);
-  margin-top:20px;
+  margin-top:25px;
+  font-size:clamp(22px,4vw,46px);
 }
+
+.hero h2 span{
+  color:#5aaaff;
+}
+
 .hero p{
   max-width:760px;
-  color:#aebbd0;
-  margin:25px auto;
-  font-size:18px;
+  margin:22px auto;
+  line-height:1.8;
+  color:#9cabc5;
+  font-size:17px;
 }
+
+/* 3D CORE */
+.core-wrap{
+  width:280px;
+  height:280px;
+  margin:45px auto;
+  perspective:800px;
+}
+
+.core{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:float 5s ease-in-out infinite;
+}
+
+.orbit{
+  position:absolute;
+  inset:25px;
+  border:2px solid rgba(79,159,255,.5);
+  border-radius:50%;
+  box-shadow:
+    0 0 35px rgba(43,128,255,.4),
+    inset 0 0 35px rgba(43,128,255,.2);
+}
+
+.orbit.one{
+  transform:rotateX(65deg) rotateZ(20deg);
+  animation:spin1 8s linear infinite;
+}
+
+.orbit.two{
+  transform:rotateY(70deg) rotateZ(30deg);
+  animation:spin2 7s linear infinite;
+}
+
+.orbit.three{
+  transform:rotateX(45deg) rotateY(45deg);
+  animation:spin1 11s linear infinite reverse;
+}
+
+.ball{
+  position:absolute;
+  width:110px;
+  height:110px;
+  left:85px;
+  top:85px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,#e9f6ff,#4ba7ff 20%,#1448c7 55%,#020817 75%);
+  box-shadow:
+    0 0 35px #2b8cff,
+    0 0 90px rgba(29,111,255,.65);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:55px;
+  font-weight:900;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotateX(4deg);}
+  50%{transform:translateY(-18px) rotateX(-4deg);}
+}
+
+@keyframes spin1{
+  from{transform:rotateX(65deg) rotateZ(0deg);}
+  to{transform:rotateX(65deg) rotateZ(360deg);}
+}
+
+@keyframes spin2{
+  from{transform:rotateY(70deg) rotateZ(0deg);}
+  to{transform:rotateY(70deg) rotateZ(360deg);}
+}
+
+/* BUTTONS */
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
 .btn{
   display:inline-block;
-  padding:15px 28px;
-  background:linear-gradient(90deg,#0078ff,#00c8ff);
-  color:#fff;
+  padding:15px 25px;
+  border-radius:12px;
   text-decoration:none;
-  border-radius:8px;
   font-weight:bold;
-  margin:8px;
+  transition:.3s;
 }
-.btn.secondary{
-  background:transparent;
-  border:1px solid #258cff;
+
+.primary{
+  background:linear-gradient(135deg,#267cff,#604cff);
+  color:#fff;
+  box-shadow:0 10px 40px rgba(38,124,255,.3);
 }
-section{padding:85px 8%}
-.title{
+
+.secondary{
+  border:1px solid #263959;
+  color:#fff;
+  background:rgba(255,255,255,.03);
+}
+
+.btn:hover{
+  transform:translateY(-4px) scale(1.02);
+}
+
+/* SECTIONS */
+section{
+  padding:100px 7%;
+}
+
+.section-title{
   text-align:center;
-  font-size:38px;
-  margin-bottom:12px;
+  margin-bottom:55px;
 }
-.subtitle{
-  text-align:center;
-  color:#8fa2bd;
-  max-width:700px;
-  margin:0 auto 45px;
+
+.section-title small{
+  color:#56a9ff;
+  letter-spacing:3px;
 }
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:20px;
+
+.section-title h2{
+  font-size:clamp(35px,5vw,58px);
+  margin-top:12px;
 }
-.card{
-  background:linear-gradient(145deg,#0c1425,#08101e);
-  border:1px solid #172c4d;
-  padding:28px;
-  border-radius:15px;
-}
-.card h3{
-  color:#50d5ff;
-  margin-bottom:12px;
-}
-.card p{color:#9faec4}
-.stats{
-  background:#07101f;
-  text-align:center;
-}
-.stat{
-  font-size:32px;
-  font-weight:bold;
-  color:#4ed8ff;
-}
-.workflow{
-  max-width:900px;
-  margin:auto;
-}
-.step{
-  margin:15px 0;
-  padding:20px;
-  border-left:3px solid #00bfff;
-  background:#091426;
-}
-.cta{
-  text-align:center;
-  background:linear-gradient(135deg,#071328,#0b2143);
-}
-.cta h2{font-size:40px}
-.cta p{
-  color:#a9bad0;
-  margin:15px auto 25px;
+
+.section-title p{
+  color:#8d9bb4;
   max-width:650px;
+  margin:15px auto;
+  line-height:1.7;
 }
-footer{
-  padding:35px;
+
+/* 3D CARDS */
+.cards{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  perspective:1200px;
+}
+
+.card{
+  min-height:260px;
+  padding:30px;
+  border-radius:22px;
+  border:1px solid rgba(103,162,255,.18);
+  background:
+    linear-gradient(145deg,rgba(17,35,70,.65),rgba(3,9,23,.8));
+  box-shadow:
+    0 30px 70px rgba(0,0,0,.45),
+    inset 0 1px rgba(255,255,255,.06);
+  transform-style:preserve-3d;
+  transition:.4s;
+}
+
+.card:hover{
+  transform:translateY(-12px) rotateX(5deg) rotateY(-5deg);
+  border-color:#398dff;
+  box-shadow:0 35px 90px rgba(25,104,255,.18);
+}
+
+.icon{
+  width:55px;
+  height:55px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#143b80,#226fff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  margin-bottom:25px;
+  box-shadow:0 12px 35px rgba(39,117,255,.35);
+}
+
+.card h3{
+  font-size:21px;
+  margin-bottom:12px;
+}
+
+.card p{
+  color:#8d9bb4;
+  line-height:1.7;
+}
+
+/* FLOW */
+.flow{
+  max-width:1100px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.step{
   text-align:center;
-  border-top:1px solid #17233b;
-  color:#72839c;
+  padding:25px 15px;
+  border-radius:18px;
+  background:rgba(12,26,53,.7);
+  border:1px solid rgba(87,151,255,.18);
 }
-@media(max-width:650px){
-  nav .links{display:none}
+
+.number{
+  width:45px;
+  height:45px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:#146cff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 0 30px rgba(20,108,255,.5);
+}
+
+.step p{
+  color:#8998b2;
+  font-size:13px;
+  margin-top:8px;
+}
+
+/* CTA */
+.cta{
+  max-width:1100px;
+  margin:80px auto;
+  padding:70px 30px;
+  text-align:center;
+  border-radius:30px;
+  border:1px solid rgba(74,151,255,.25);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(29,112,255,.28),transparent 55%),
+    #050b18;
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+}
+
+.cta h2{
+  font-size:clamp(32px,5vw,58px);
+  margin-bottom:20px;
+}
+
+.cta p{
+  color:#93a1ba;
+  margin-bottom:30px;
+}
+
+footer{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:35px 7%;
+  text-align:center;
+  color:#65738c;
+}
+
+/* MOBILE */
+@media(max-width:850px){
+  nav .links{
+    display:none;
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .flow{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    letter-spacing:-2px;
+  }
+
+  .core-wrap{
+    width:230px;
+    height:230px;
+  }
+
+  .ball{
+    width:90px;
+    height:90px;
+    left:70px;
+    top:70px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="grid"></div>
+<div class="glow"></div>
+
 <nav>
-  <div class="logo">NEXORA ONECORE AI</div>
+  <div class="logo">NEXORA <span>ONECORE AI</span></div>
+
   <div class="links">
     <a href="#services">Services</a>
     <a href="#industries">Industries</a>
-    <a href="#how">How It Works</a>
+    <a href="#process">How It Works</a>
     <a href="#contact">Contact</a>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="badge">AI-Powered Business Execution</div>
+  <div class="hero-content">
 
-  <h1>NEXORA</h1>
-  <h2>Automate Operations.<br>Accelerate Revenue.</h2>
+    <div class="badge">AUTONOMOUS AI BUSINESS EXECUTION</div>
 
-  <p>
-    Nexora OneCore AI designs intelligent AI agents and automation
-    systems that help businesses streamline operations, improve
-    efficiency and unlock new revenue opportunities.
-  </p>
+    <h1>NEXORA</h1>
 
-  <div>
-    <a class="btn" href="#contact">Request a Custom Demo</a>
-    <a class="btn secondary" href="#services">Explore Solutions</a>
+    <h2>One Intelligence. <span>Many Businesses.</span></h2>
+
+    <p>
+      Nexora OneCore AI designs intelligent AI agents and automation
+      systems that connect business workflows, operations, customer
+      experience and revenue execution.
+    </p>
+
+    <div class="core-wrap">
+      <div class="core">
+        <div class="orbit one"></div>
+        <div class="orbit two"></div>
+        <div class="orbit three"></div>
+        <div class="ball">N</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a class="btn primary" href="#contact">Request a Custom Demo</a>
+      <a class="btn secondary" href="#services">Explore AI Solutions</a>
+    </div>
+
   </div>
 </div>
 
 <section id="services">
-  <h2 class="title">AI That Executes Business</h2>
-  <p class="subtitle">
-    From customer acquisition to complex operational workflows,
-    Nexora builds AI systems around real business requirements.
-  </p>
 
-  <div class="grid">
+  <div class="section-title">
+    <small>AI WORKFORCE</small>
+    <h2>Built to Execute</h2>
+    <p>
+      AI systems designed around real business workflows rather than
+      one-size-fits-all automation.
+    </p>
+  </div>
+
+  <div class="cards">
+
     <div class="card">
+      <div class="icon">⚡</div>
       <h3>AI Automation</h3>
-      <p>Automate repetitive workflows, routing, follow-ups, data processing and operational tasks.</p>
+      <p>Automate repetitive workflows, task routing, data processing and operational handoffs.</p>
     </div>
 
     <div class="card">
+      <div class="icon">↗</div>
       <h3>Revenue AI</h3>
-      <p>AI-powered prospect research, lead qualification, outreach workflows and sales operations.</p>
+      <p>Support lead qualification, sales workflows, follow-ups and revenue operations.</p>
     </div>
 
     <div class="card">
+      <div class="icon">◎</div>
       <h3>Operations AI</h3>
-      <p>Intelligent workflow orchestration, exception handling, escalation and management visibility.</p>
+      <p>Coordinate exceptions, teams, requests and complex business operations.</p>
     </div>
 
     <div class="card">
+      <div class="icon">◈</div>
       <h3>Marketing AI</h3>
-      <p>Content, campaign intelligence, creative workflows, customer insights and marketing automation.</p>
+      <p>Creative concepts, campaign workflows, content operations and performance intelligence.</p>
     </div>
 
     <div class="card">
+      <div class="icon">◉</div>
       <h3>Customer Experience AI</h3>
-      <p>Support workflows, enquiry processing, appointment handling and intelligent customer communication.</p>
+      <p>Intelligent enquiry handling, support workflows, appointment and response automation.</p>
     </div>
 
     <div class="card">
+      <div class="icon">N</div>
       <h3>Custom AI Agents</h3>
-      <p>Purpose-built AI agents designed around your company's workflows, systems and approval rules.</p>
+      <p>Purpose-built agents designed around your company's approved systems and workflows.</p>
     </div>
+
   </div>
 </section>
 
-<section id="industries" class="stats">
-  <h2 class="title">Built Across Industries</h2>
+<section id="industries">
 
-  <div class="grid">
-    <div class="card">
-      <div class="stat">Facilities</div>
-      <p>Maintenance, service requests, SLA and exception orchestration.</p>
-    </div>
+  <div class="section-title">
+    <small>GLOBAL BUSINESS</small>
+    <h2>AI Across Industries</h2>
+  </div>
 
-    <div class="card">
-      <div class="stat">Logistics</div>
-      <p>Freight enquiries, dispatch, tracking and operational exceptions.</p>
-    </div>
+  <div class="cards">
 
-    <div class="card">
-      <div class="stat">E-commerce</div>
-      <p>Operations, support, product workflows and customer automation.</p>
-    </div>
+    <div class="card"><h3>Facilities Management</h3><p>Maintenance requests, exception handling and multi-site operations.</p></div>
 
-    <div class="card">
-      <div class="stat">Real Estate</div>
-      <p>Lead qualification, property workflows and sales automation.</p>
-    </div>
+    <div class="card"><h3>Logistics</h3><p>Quote intake, shipment workflows, dispatch support and operational coordination.</p></div>
 
-    <div class="card">
-      <div class="stat">Healthcare</div>
-      <p>Administrative and authorized operational workflow automation.</p>
-    </div>
+    <div class="card"><h3>E-commerce</h3><p>Customer operations, product workflows and intelligent automation.</p></div>
 
-    <div class="card">
-      <div class="stat">Enterprise</div>
-      <p>Custom AI orchestration for complex multi-team operations.</p>
-    </div>
+    <div class="card"><h3>Real Estate</h3><p>Lead qualification, sales workflows and property operations.</p></div>
+
+    <div class="card"><h3>Healthcare</h3><p>Administrative workflow automation with controlled human oversight.</p></div>
+
+    <div class="card"><h3>Enterprise</h3><p>Custom AI orchestration for complex teams, systems and workflows.</p></div>
+
   </div>
 </section>
 
-<section id="how">
-  <h2 class="title">How Nexora Works</h2>
-  <p class="subtitle">
-    We start with the business problem—not with unnecessary technology.
-  </p>
+<section id="process">
 
-  <div class="workflow">
-    <div class="step"><b>01 — Understand</b><br>Identify the workflow, bottleneck and desired outcome.</div>
-    <div class="step"><b>02 — Design</b><br>Create a tailored AI workflow and custom demonstration.</div>
-    <div class="step"><b>03 — Integrate</b><br>Connect only to customer-authorized systems and data.</div>
-    <div class="step"><b>04 — Execute</b><br>Automate approved tasks while keeping humans in control where required.</div>
-    <div class="step"><b>05 — Improve</b><br>Measure operational results and continuously refine the workflow.</div>
+  <div class="section-title">
+    <small>ONECORE PROCESS</small>
+    <h2>From Workflow to Execution</h2>
+  </div>
+
+  <div class="flow">
+
+    <div class="step">
+      <div class="number">1</div>
+      <strong>Understand</strong>
+      <p>Map the workflow.</p>
+    </div>
+
+    <div class="step">
+      <div class="number">2</div>
+      <strong>Design</strong>
+      <p>Build the AI solution.</p>
+    </div>
+
+    <div class="step">
+      <div class="number">3</div>
+      <strong>Integrate</strong>
+      <p>Connect approved systems.</p>
+    </div>
+
+    <div class="step">
+      <div class="number">4</div>
+      <strong>Execute</strong>
+      <p>Automate the workflow.</p>
+    </div>
+
+    <div class="step">
+      <div class="number">5</div>
+      <strong>Improve</strong>
+      <p>Measure and optimize.</p>
+    </div>
+
   </div>
 </section>
 
-<section id="contact" class="cta">
-  <h2>Show Us the Workflow.<br>We'll Show You the AI Solution.</h2>
+<section id="contact">
 
-  <p>
-    Tell Nexora where your business is losing time, dealing with
-    repetitive work or struggling with operational complexity.
-    We'll design a tailored AI automation concept around it.
-  </p>
+  <div class="cta">
+    <h2>Show Us the Workflow.<br>We'll Show You the AI Solution.</h2>
 
-  <a class="btn" href="mailto:nexoraonecoreai@gmail.com">
-    Request a Custom Demo
-  </a>
+    <p>
+      Start with a focused workflow and discover where intelligent
+      automation can create practical business value.
+    </p>
+
+    <a class="btn primary" href="mailto:nexoraonecoreai@gmail.com">
+      Request a Custom Demo
+    </a>
+  </div>
+
 </section>
 
 <footer>
-  <b>Nexora OneCore AI</b><br>
-  Automate Operations. Accelerate Revenue.<br><br>
   © 2026 Nexora OneCore AI. All rights reserved.
 </footer>
 
