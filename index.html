@@ -1,933 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#020713">
-<title>Nexora OneCore AI — AI Business Command Center</title>
-<meta name="description" content="Nexora OneCore AI — interactive AI workforce and business automation command center.">
+/* ===== 50 BUSINESS PREMIUM SLIDER ===== */
 
-<style>
-:root{
-  --bg:#020713;
-  --panel:rgba(5,18,42,.76);
-  --line:rgba(65,198,255,.28);
-  --cyan:#55e6ff;
-  --blue:#178cff;
-  --green:#67ffad;
-  --text:#f4fbff;
-  --muted:#9cb4cc;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  background:#01040b;
-  color:var(--text);
-  overflow-x:hidden;
-}
-button,a{font:inherit}
-
-/* NAV */
-nav{
-  position:fixed;
-  z-index:1000;
-  top:0;left:0;right:0;
-  height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 5%;
-  background:linear-gradient(180deg,rgba(1,6,18,.94),rgba(1,6,18,.35));
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid rgba(90,211,255,.13);
-}
-.brand{
-  font-weight:900;
-  letter-spacing:2px;
-}
-.brand b{color:var(--cyan)}
-.navright{
-  display:flex;
-  align-items:center;
-  gap:20px;
-}
-.navright a{
-  color:#d8edff;
-  text-decoration:none;
-  font-size:13px;
-}
-.btn{
-  border:1px solid rgba(98,220,255,.45);
-  color:white!important;
-  background:linear-gradient(135deg,#086ee8,#00bde9);
-  padding:11px 17px;
-  border-radius:11px;
-  box-shadow:0 0 30px rgba(0,159,255,.22);
-}
-
-/* MAIN WORLD */
-.world{
-  position:relative;
-  min-height:100vh;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 43%,rgba(0,129,255,.24),transparent 24%),
-    radial-gradient(circle at 50% 100%,rgba(0,93,255,.17),transparent 45%),
-    linear-gradient(180deg,#06162d,#020713 70%,#01040b);
-}
-.world:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(73,186,255,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(73,186,255,.035) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:linear-gradient(to bottom,transparent,#000 30%,#000);
-}
-.stars{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-}
-.star{
-  position:absolute;
-  width:2px;height:2px;
-  background:#9beeff;
-  border-radius:50%;
-  box-shadow:0 0 9px #3fdcff;
-  animation:rise linear infinite;
-}
-@keyframes rise{
-  from{transform:translateY(105vh);opacity:0}
-  15%{opacity:.9}
-  to{transform:translateY(-10vh);opacity:0}
-}
-
-/* HERO TEXT */
-.heroCopy{
-  position:absolute;
-  z-index:20;
-  top:90px;
-  left:50%;
-  width:min(900px,94%);
-  transform:translateX(-50%);
-  text-align:center;
-}
-.pill{
-  display:inline-block;
-  border:1px solid rgba(80,215,255,.35);
-  background:rgba(8,101,177,.12);
-  padding:7px 14px;
-  border-radius:100px;
-  color:#7beaff;
-  font-size:10px;
-  letter-spacing:2.4px;
-}
-.heroCopy h1{
-  margin:11px 0 5px;
-  font-size:clamp(34px,5vw,72px);
-  line-height:.98;
-  letter-spacing:-2.5px;
-}
-.heroCopy h1 span{
-  color:#4cd8ff;
-  text-shadow:0 0 28px rgba(0,179,255,.35);
-}
-.heroCopy p{
-  margin:12px auto 0;
-  max-width:700px;
-  color:#a4b9cf;
-  font-size:14px;
-}
-
-/* 3D STAGE */
-.stage{
-  position:absolute;
-  z-index:4;
-  inset:195px 0 105px;
-  perspective:1000px;
-}
-.scene{
-  position:absolute;
-  inset:0;
-  transform-style:preserve-3d;
-  transition:transform .18s ease-out;
-}
-
-/* FLOOR */
-.floor{
-  position:absolute;
-  left:-20%;
-  width:140%;
-  height:80%;
-  bottom:-45%;
-  transform:rotateX(68deg);
-  transform-origin:center top;
-  background-image:
-    linear-gradient(rgba(0,190,255,.19) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,190,255,.19) 1px,transparent 1px);
-  background-size:55px 55px;
-  mask-image:linear-gradient(to bottom,#000,transparent 80%);
-  box-shadow:0 -30px 100px rgba(0,128,255,.12);
-}
-
-/* CENTRAL CORE */
-.coreWrap{
-  position:absolute;
-  z-index:10;
-  width:360px;
-  height:360px;
-  left:50%;
-  top:44%;
-  transform:translate(-50%,-50%);
-}
-.ring{
-  position:absolute;
-  border-radius:50%;
-  border:1px solid rgba(75,220,255,.65);
-  box-shadow:0 0 25px rgba(0,171,255,.25),inset 0 0 25px rgba(0,171,255,.08);
-}
-.r1{inset:5px;animation:spin 14s linear infinite}
-.r2{inset:34px;border-style:dashed;animation:spin 9s linear infinite reverse}
-.r3{
-  left:30px;right:30px;top:110px;height:115px;
-  transform:rotateX(70deg);
-  animation:ringPulse 3s ease-in-out infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes ringPulse{50%{opacity:.35;transform:rotateX(70deg) scale(1.1)}}
-
-.globe{
-  position:absolute;
-  width:205px;height:205px;
-  left:77px;top:77px;
-  border-radius:50%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:
-    radial-gradient(circle at 32% 25%,#c6fbff 0 3%,#2fcfff 7%,#096fe7 27%,#052357 55%,#01091a 77%);
-  box-shadow:
-    0 0 30px #0aaeff,
-    0 0 90px rgba(0,113,255,.55),
-    inset -30px -30px 50px rgba(0,0,0,.55);
-  animation:float 3.7s ease-in-out infinite;
-}
-.globe:before,.globe:after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  border:1px solid rgba(121,233,255,.35);
-}
-.globe:before{inset:25px 5px}
-.globe:after{inset:5px 45px}
-.globe strong{
-  font-size:27px;
-  letter-spacing:2px;
-}
-.globe span{
-  color:#75eaff;
-  letter-spacing:3px;
-  font-size:10px;
-}
-@keyframes float{50%{transform:translateY(-10px)}}
-
-/* ROBOTS */
-.robotStation{
-  position:absolute;
-  z-index:7;
-  width:190px;
-  min-height:150px;
-  padding:13px;
-  border:1px solid rgba(74,202,255,.28);
-  border-radius:18px;
-  background:linear-gradient(145deg,rgba(10,37,71,.83),rgba(2,10,24,.86));
-  backdrop-filter:blur(12px);
-  box-shadow:0 20px 45px rgba(0,0,0,.4),0 0 30px rgba(0,132,255,.08);
-}
-.rs1{left:5%;top:12%}
-.rs2{right:5%;top:12%}
-.rs3{left:8%;top:55%}
-.rs4{right:8%;top:55%}
-.rs5{left:25%;bottom:2%}
-.rs6{right:25%;bottom:2%}
-
-.robot{
-  width:66px;
-  height:78px;
-  margin:0 auto 4px;
-  position:relative;
-  animation:robotWork 2.4s ease-in-out infinite;
-}
-.robotHead{
-  width:48px;height:37px;
-  margin:auto;
-  position:relative;
-  border-radius:17px 17px 11px 11px;
-  border:1px solid #91ecff;
-  background:linear-gradient(145deg,#c7edf8,#466782 45%,#071421);
-  box-shadow:0 0 15px rgba(0,202,255,.65);
-}
-.robotFace{
-  position:absolute;
-  left:6px;right:6px;top:9px;height:16px;
-  border-radius:10px;
-  background:#020812;
-}
-.robotFace:before,.robotFace:after{
-  content:"";
-  position:absolute;
-  top:6px;
-  width:6px;height:3px;
-  background:#62eaff;
-  box-shadow:0 0 7px #00d9ff;
-}
-.robotFace:before{left:7px}
-.robotFace:after{right:7px}
-.robotBody{
-  width:58px;height:43px;
-  margin:-1px auto;
-  border-radius:10px 10px 19px 19px;
-  border:1px solid #60c8e7;
-  background:linear-gradient(145deg,#8cb2c8,#24435d 50%,#06111d);
-  position:relative;
-}
-.robotBody:after{
-  content:"N";
-  position:absolute;
-  left:50%;top:9px;
-  transform:translateX(-50%);
-  font-weight:900;
-  color:#62eaff;
-  text-shadow:0 0 8px #00bfff;
-}
-@keyframes robotWork{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-5px) rotate(1deg)}
-}
-.robotStation h4{
-  color:#6ee5ff;
-  font-size:11px;
-  margin:6px 0;
-  text-align:center;
-  letter-spacing:.4px;
-}
-.screen{
-  height:29px;
-  border:1px solid rgba(58,209,255,.28);
-  border-radius:7px;
-  overflow:hidden;
-  position:relative;
-  background:#031020;
-}
-.screen:after{
-  content:"";
-  position:absolute;
-  left:-50%;top:0;
-  width:50%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(81,225,255,.35),transparent);
-  animation:scan 2s linear infinite;
-}
-@keyframes scan{to{left:110%}}
-
-/* CONNECTIONS */
-.beam{
-  position:absolute;
-  z-index:3;
-  height:1px;
-  transform-origin:left center;
-  background:linear-gradient(90deg,transparent,#44dfff,#168aff,transparent);
-  filter:drop-shadow(0 0 6px #00bfff);
-  animation:beamPulse 1.8s infinite;
-}
-.b1{width:32%;left:19%;top:34%;transform:rotate(8deg)}
-.b2{width:32%;right:19%;top:34%;transform:rotate(-8deg)}
-.b3{width:30%;left:21%;top:67%;transform:rotate(-9deg)}
-.b4{width:30%;right:21%;top:67%;transform:rotate(9deg)}
-@keyframes beamPulse{50%{opacity:.25}}
-
-/* ACTIVE BUSINESS PANEL */
-.focusPanel{
-  position:absolute;
-  z-index:30;
-  left:50%;
-  bottom:92px;
-  transform:translateX(-50%);
-  width:min(720px,90%);
-  border:1px solid rgba(91,221,255,.42);
-  border-radius:18px;
-  background:rgba(3,14,34,.82);
-  backdrop-filter:blur(18px);
-  box-shadow:0 0 45px rgba(0,137,255,.17);
-  padding:17px 20px;
-  text-align:center;
-}
-.focusTop{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:9px;
-  color:#64ffad;
-  font-size:10px;
-  letter-spacing:2px;
-}
-.dot{
-  width:7px;height:7px;
-  border-radius:50%;
-  background:#64ffad;
-  box-shadow:0 0 10px #64ffad;
-  animation:blink 1.2s infinite;
-}
-@keyframes blink{50%{opacity:.25}}
-.focusPanel h2{
-  margin:8px 0 5px;
-  font-size:clamp(20px,3vw,33px);
-  color:#eafaff;
-}
-.focusPanel p{
-  margin:0;
-  color:#91aac2;
-  font-size:12px;
-  line-height:1.5;
-}
-
-/* 50 BUSINESS STRIP */
-.businessDock{
-  position:absolute;
-  z-index:40;
-  bottom:0;
-  left:0;right:0;
-  height:78px;
-  background:rgba(1,7,18,.86);
-  border-top:1px solid rgba(79,204,255,.22);
-  backdrop-filter:blur(17px);
-  overflow:hidden;
-}
-.businessTrack{
-  height:100%;
-  display:flex;
-  align-items:center;
-  gap:9px;
-  width:max-content;
-  padding:0 8px;
-  animation:moveBusinesses 95s linear infinite;
-}
-.biz{
-  width:210px;
-  flex:none;
-  padding:11px 12px;
-  border-radius:11px;
-  border:1px solid rgba(63,182,255,.18);
-  background:rgba(6,25,49,.76);
-  color:#d8eaff;
-  font-size:11px;
-  white-space:nowrap;
-  transition:.3s;
-}
-.biz b{
-  color:#4edaff;
-  margin-right:7px;
-}
-.biz.active{
-  border-color:#5be5ff;
-  background:rgba(9,85,141,.35);
-  box-shadow:0 0 22px rgba(0,190,255,.22);
-}
-@keyframes moveBusinesses{
-  to{transform:translateX(-50%)}
-}
-
-/* BUSINESS EXPLORER */
-.explorer{
-  position:relative;
-  padding:95px 5%;
-  background:
-    radial-gradient(circle at 50% 0,rgba(0,106,255,.15),transparent 34%),
-    #020610;
-}
-.heading{
-  max-width:850px;
-  margin:auto;
-  text-align:center;
-}
-.heading small{
-  color:#5adfff;
-  letter-spacing:3px;
-}
-.heading h2{
-  font-size:clamp(32px,5vw,58px);
-  margin:12px 0;
-}
-.heading p{
-  color:#91a7be;
-  line-height:1.7;
-}
 .grid{
   max-width:1250px;
   margin:45px auto 0;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:11px;
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  padding:15px 5px 30px;
+  scrollbar-width:none;
 }
+
+.grid::-webkit-scrollbar{
+  display:none;
+}
+
 .businessCard{
+  flex:0 0 245px;
+  height:185px;
+  scroll-snap-align:center;
   position:relative;
-  min-height:135px;
-  padding:16px;
-  border-radius:14px;
-  border:1px solid rgba(68,180,255,.16);
-  background:linear-gradient(145deg,#071a33,#030916);
-  overflow:hidden;
+  padding:22px;
+  border-radius:20px;
+
+  background:
+    radial-gradient(circle at 80% 10%,
+      rgba(0,190,255,.18),
+      transparent 40%),
+    linear-gradient(145deg,#081d39,#020817);
+
+  border:1px solid rgba(72,204,255,.25);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.35),
+    inset 0 0 25px rgba(0,151,255,.04);
+
+  transition:.35s;
   cursor:pointer;
-  transition:.28s;
+  overflow:hidden;
 }
-.businessCard:after{
-  content:"";
-  position:absolute;
-  left:-100%;top:0;
-  width:80%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(77,221,255,.08),transparent);
-  transition:.5s;
-}
+
 .businessCard:hover{
-  transform:translateY(-6px);
-  border-color:#4fdcff;
-  box-shadow:0 15px 45px rgba(0,128,255,.12);
+  transform:translateY(-8px) scale(1.03);
+  border-color:#59e5ff;
+
+  box-shadow:
+    0 20px 55px rgba(0,130,255,.20),
+    0 0 25px rgba(0,205,255,.12);
 }
-.businessCard:hover:after{left:130%}
+
+.businessCard h3{
+  font-size:17px;
+  line-height:1.4;
+  margin-top:20px;
+}
+
 .num{
-  color:#49d9ff;
-  font-size:10px;
+  color:#57ddff;
+  font-size:11px;
   letter-spacing:2px;
 }
-.businessCard h3{
-  font-size:13px;
-  line-height:1.4;
-  margin:12px 0 0;
-}
+
 .status{
   position:absolute;
-  bottom:13px;
-  left:16px;
-  color:#62ffac;
+  bottom:18px;
+  left:22px;
+  color:#63ffac;
   font-size:9px;
 }
 
-/* DETAIL */
-.detail{
-  padding:95px 5%;
-  background:#01040b;
-}
-.detailBox{
-  max-width:1000px;
-  margin:auto;
-  padding:38px;
-  border-radius:25px;
-  border:1px solid rgba(70,199,255,.22);
-  background:
-    radial-gradient(circle at 50% 0,rgba(0,119,255,.17),transparent 50%),
-    #051025;
-  text-align:center;
-}
-.detailBox small{
-  color:#62e5ff;
-  letter-spacing:3px;
-}
-#detailName{
-  font-size:clamp(27px,4vw,46px);
-  margin:14px 0 10px;
-}
-#detailTask{
-  max-width:720px;
-  margin:auto;
-  color:#9bb0c6;
-  line-height:1.7;
-}
-.flow{
-  margin:28px auto 0;
+/* SLIDER CONTROLS */
+
+.sliderControls{
   display:flex;
-  max-width:850px;
-  align-items:center;
   justify-content:center;
-  flex-wrap:wrap;
-  gap:9px;
-}
-.flow span{
-  border:1px solid rgba(76,207,255,.25);
-  background:rgba(4,27,54,.65);
-  padding:10px 13px;
-  border-radius:9px;
-  color:#bdeeff;
-  font-size:11px;
-}
-.arrow{color:#3ed8ff}
-
-/* CTA */
-.cta{
-  text-align:center;
-  padding:100px 5%;
-  background:
-    radial-gradient(circle,rgba(0,118,255,.19),transparent 40%),
-    #020610;
-}
-.cta h2{
-  font-size:clamp(34px,5vw,60px);
-  margin:0;
-}
-.cta h2 span{color:#4cdaff}
-.cta p{
-  max-width:650px;
-  margin:18px auto 28px;
-  color:#91a8bf;
-  line-height:1.6;
-}
-.ctaBtn{
-  display:inline-block;
-  text-decoration:none;
-  color:#fff;
-  font-weight:800;
-  padding:15px 23px;
-  border-radius:11px;
-  background:linear-gradient(135deg,#0878f5,#00c4e9);
-  box-shadow:0 10px 40px rgba(0,139,255,.25);
-}
-footer{
-  padding:30px;
-  text-align:center;
-  color:#536a81;
-  background:#010308;
-  border-top:1px solid rgba(255,255,255,.05);
+  gap:14px;
+  margin-top:5px;
 }
 
-/* MOBILE */
-@media(max-width:900px){
-  .navright a:not(.btn){display:none}
-  .stage{inset:200px 0 125px}
-  .world{min-height:1050px}
-  .coreWrap{
-    top:29%;
-    transform:translate(-50%,-50%) scale(.7);
+.slideBtn{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:1px solid rgba(83,215,255,.4);
+  background:rgba(5,27,54,.85);
+  color:#7eeaff;
+  font-size:22px;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.slideBtn:hover{
+  background:#087fd9;
+  color:white;
+  transform:scale(1.08);
+}
+
+@media(max-width:600px){
+
+  .businessCard{
+    flex:0 0 82%;
+    height:190px;
   }
-  .robotStation{
-    width:43%;
-    min-height:125px;
-    padding:9px;
+
+}<div class="grid" id="grid"></div><div class="sliderControls">
+  <button class="slideBtn" onclick="slideBusinesses(-1)">‹</button>
+  <button class="slideBtn" onclick="slideBusinesses(1)">›</button>
+</div>/* ===== BUSINESS SLIDER ===== */
+
+function slideBusinesses(direction){
+  const slider = document.getElementById("grid");
+
+  slider.scrollBy({
+    left: direction * 270,
+    behavior:"smooth"
+  });
+}
+
+/* AUTO SLIDE */
+
+let businessAutoSlide = setInterval(()=>{
+  const slider = document.getElementById("grid");
+
+  if(
+    slider.scrollLeft + slider.clientWidth >=
+    slider.scrollWidth - 20
+  ){
+    slider.scrollTo({
+      left:0,
+      behavior:"smooth"
+    });
+  }else{
+    slider.scrollBy({
+      left:270,
+      behavior:"smooth"
+    });
   }
-  .robot{transform:scale(.8);height:66px}
-  .robotStation h4{font-size:9px}
-  .rs1{left:4%;top:48%}
-  .rs2{right:4%;top:48%}
-  .rs3{left:4%;top:67%}
-  .rs4{right:4%;top:67%}
-  .rs5,.rs6{display:none}
-  .beam{display:none}
-  .focusPanel{bottom:93px}
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .businessCard{min-height:120px}
-}
-@media(max-width:500px){
-  nav{height:62px;padding:0 4%}
-  .brand{font-size:13px}
-  .btn{font-size:10px;padding:9px 11px}
-  .heroCopy{top:76px}
-  .heroCopy p{font-size:12px}
-  .grid{grid-template-columns:1fr 1fr}
-  .detailBox{padding:28px 16px}
-}
-</style>
-</head>
+},2800);
 
-<body>
+/* pause when user touches slider */
 
-<nav>
-  <div class="brand">NEXORA <b>ONECORE AI</b></div>
-  <div class="navright">
-    <a href="#businesses">50 Businesses</a>
-    <a href="#system">AI Workforce</a>
-    <a href="#contact" class="btn">Explore Nexora →</a>
-  </div>
-</nav>
+const businessSlider=document.getElementById("grid");
 
-<section class="world" id="system">
-  <div class="stars" id="stars"></div>
-
-  <div class="heroCopy">
-    <div class="pill">NEXORA AI BUSINESS FACTORY • INTERACTIVE CONCEPT</div>
-    <h1>One Intelligence.<br><span>50 AI Businesses.</span></h1>
-    <p>Explore a connected AI workforce designed around sales, operations, logistics, facilities, healthcare, commerce and more.</p>
-  </div>
-
-  <div class="stage" id="stage">
-    <div class="scene" id="scene">
-      <div class="floor"></div>
-
-      <div class="beam b1"></div>
-      <div class="beam b2"></div>
-      <div class="beam b3"></div>
-      <div class="beam b4"></div>
-
-      <div class="coreWrap">
-        <div class="ring r1"></div>
-        <div class="ring r2"></div>
-        <div class="ring r3"></div>
-        <div class="globe">
-          <strong>NEXORA</strong>
-          <span>ONECORE AI</span>
-        </div>
-      </div>
-
-      <div class="robotStation rs1">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>PROSPECTING UNIT</h4>
-        <div class="screen"></div>
-      </div>
-
-      <div class="robotStation rs2">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>REVENUE UNIT</h4>
-        <div class="screen"></div>
-      </div>
-
-      <div class="robotStation rs3">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>OPERATIONS UNIT</h4>
-        <div class="screen"></div>
-      </div>
-
-      <div class="robotStation rs4">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>ANALYTICS UNIT</h4>
-        <div class="screen"></div>
-      </div>
-
-      <div class="robotStation rs5">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>SUPPORT UNIT</h4>
-        <div class="screen"></div>
-      </div>
-
-      <div class="robotStation rs6">
-        <div class="robot">
-          <div class="robotHead"><div class="robotFace"></div></div>
-          <div class="robotBody"></div>
-        </div>
-        <h4>AUTOMATION UNIT</h4>
-        <div class="screen"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="focusPanel">
-    <div class="focusTop"><i class="dot"></i> AI BUSINESS FOCUS</div>
-    <h2 id="focusName">01 — AI Revenue Workforce</h2>
-    <p id="focusTask">Supporting prospecting, qualification, follow-up and revenue workflows.</p>
-  </div>
-
-  <div class="businessDock">
-    <div class="businessTrack" id="businessTrack"></div>
-  </div>
-</section>
-
-<section class="explorer" id="businesses">
-  <div class="heading">
-    <small>NEXORA BUSINESS FACTORY</small>
-    <h2>50 Specialized AI Businesses</h2>
-    <p>Select any business to explore its workflow concept. Each business can be tailored around an organization's approved systems, processes and requirements.</p>
-  </div>
-  <div class="grid" id="grid"></div>
-</section>
-
-<section class="detail">
-  <div class="detailBox">
-    <small>SELECTED AI WORKFORCE</small>
-    <div id="detailName">AI Revenue Workforce</div>
-    <p id="detailTask">Supporting prospecting, qualification, follow-up and revenue workflows.</p>
-
-    <div class="flow">
-      <span>Business Input</span>
-      <b class="arrow">→</b>
-      <span>AI Analysis</span>
-      <b class="arrow">→</b>
-      <span>Workflow Action</span>
-      <b class="arrow">→</b>
-      <span>Human Approval</span>
-      <b class="arrow">→</b>
-      <span>Outcome</span>
-    </div>
-  </div>
-</section>
-
-<section class="cta" id="contact">
-  <h2>OneCore.<br><span>Many Business Workflows.</span></h2>
-  <p>Start with one focused workflow. Nexora OneCore AI can design a tailored AI automation concept around the operational requirement.</p>
-  <a class="ctaBtn" href="#businesses">Explore All 50 Businesses</a>
-</section>
-
-<footer>© 2026 Nexora OneCore AI • Interactive Business Factory Concept</footer>
-
-<script>
-const businesses = [
-["AI Revenue Workforce","Supporting prospecting, qualification, follow-up and revenue workflows."],
-["Facilities Management AI","Supporting maintenance intake, triage, technician coordination and facilities workflows."],
-["Logistics Quote Agent","Organizing freight enquiries, missing information, service classification and quote-team handoff."],
-["E-commerce Operations AI","Supporting product, order, inventory and customer operations."],
-["Hotel Operations AI","Supporting guest requests, housekeeping coordination and hotel operations."],
-["Clinic Operations AI","Supporting approved appointment, enquiry and administrative clinic workflows."],
-["Dental Practice AI","Supporting scheduling, patient enquiries and dental practice administration."],
-["Real Estate Sales AI","Supporting property enquiries, lead qualification and sales follow-up."],
-["Property Management AI","Supporting tenant requests, maintenance coordination and property workflows."],
-["Construction Project AI","Supporting project information, task coordination and construction operations."],
-["Manufacturing Operations AI","Supporting production information, operational exceptions and workflow coordination."],
-["Warehouse Operations AI","Supporting inventory movement, task coordination and warehouse workflows."],
-["Fleet Operations AI","Supporting vehicle operations, scheduling and fleet workflow coordination."],
-["Last-Mile Delivery AI","Supporting dispatch, delivery exceptions and customer communication workflows."],
-["Hospitality Food Operations AI","Supporting orders, service workflows and hospitality food operations."],
-["Home Services Marketplace AI","Supporting service requests, provider matching and booking workflows."],
-["Emergency Services Coordination AI","Supporting authorized request classification and operational coordination workflows."],
-["Automotive Service AI","Supporting service enquiries, bookings and workshop workflow coordination."],
-["Towing & Roadside AI","Supporting roadside requests, location intake and dispatch coordination."],
-["Insurance Operations AI","Supporting document intake, request classification and insurance operations."],
-["Accounting Workflow AI","Supporting approved document, reconciliation and accounting workflow preparation."],
-["Legal Operations AI","Supporting authorized document organization, extraction and legal operations."],
-["HR Operations AI","Supporting employee requests, HR information and administrative workflows."],
-["Recruitment AI","Supporting candidate intake, screening workflows and recruitment coordination."],
-["Employee Onboarding AI","Supporting onboarding checklists, information collection and task coordination."],
-["Customer Support AI","Classifying customer requests and routing cases for appropriate action."],
-["Contact Center AI","Supporting enquiry classification, summaries and contact-center workflows."],
-["Appointment Booking AI","Supporting availability workflows, booking requests and reminders."],
-["Education Revision AI","Supporting structured revision, learning activities and educational workflows."],
-["School Administration AI","Supporting school enquiries, administrative tasks and information workflows."],
-["Training & L&D AI","Supporting training content, learning workflows and development operations."],
-["Healthcare Back-Office AI","Supporting approved non-clinical administrative healthcare workflows."],
-["Pharmacy Operations AI","Supporting approved inventory, request and administrative pharmacy workflows."],
-["Retail Store Operations AI","Supporting store tasks, inventory information and retail operations."],
-["Supermarket Operations AI","Supporting product, stock and supermarket operational workflows."],
-["Procurement AI","Supporting purchase requests, information comparison and procurement workflows."],
-["Supplier Management AI","Supporting supplier information, communication and coordination workflows."],
-["Field Service AI","Supporting work orders, technician coordination and field-service workflows."],
-["Energy & Utilities Operations AI","Supporting approved operational requests and utility workflow coordination."],
-["Solar Operations AI","Supporting project, maintenance and solar operations workflows."],
-["Telecom Field Operations AI","Supporting field requests, work orders and telecom operational coordination."],
-["IT Service Management AI","Supporting ticket classification, knowledge retrieval and IT service workflows."],
-["Cybersecurity Operations Assistant","Supporting authorized defensive security triage, documentation and workflow coordination."],
-["Compliance Operations AI","Supporting approved document checks, evidence organization and compliance workflows."],
-["Document Processing AI","Extracting, organizing and routing approved business documents."],
-["Knowledge Management AI","Organizing approved company knowledge and supporting information retrieval."],
-["Marketing Operations AI","Supporting content, campaign planning, creative workflows and reporting."],
-["Social Media Operations AI","Supporting content planning, publishing workflows and engagement operations."],
-["Travel Operations AI","Supporting travel enquiries, itinerary information and operational workflows."],
-["Event Operations AI","Supporting attendee, scheduling, vendor and event coordination workflows."]
-];
-
-const track = document.getElementById("businessTrack");
-const grid = document.getElementById("grid");
-
-function addTrack(){
-  [...businesses,...businesses].forEach((b,i)=>{
-    const item=document.createElement("div");
-    item.className="biz";
-    item.dataset.index=i%50;
-    item.innerHTML=`<b>${String((i%50)+1).padStart(2,"0")}</b>${b[0]}`;
-    track.appendChild(item);
-  });
-}
-
-function selectBusiness(i){
-  const b=businesses[i];
-  document.getElementById("focusName").textContent=
-    `${String(i+1).padStart(2,"0")} — ${b[0]}`;
-  document.getElementById("focusTask").textContent=b[1];
-  document.getElementById("detailName").textContent=b[0];
-  document.getElementById("detailTask").textContent=b[1];
-
-  document.querySelectorAll(".biz").forEach(x=>{
-    x.classList.toggle("active",Number(x.dataset.index)===i);
-  });
-}
-
-function addGrid(){
-  businesses.forEach((b,i)=>{
-    const card=document.createElement("div");
-    card.className="businessCard";
-    card.innerHTML=`
-      <div class="num">BUSINESS ${String(i+1).padStart(2,"0")}</div>
-      <h3>${b[0]}</h3>
-      <div class="status">● AI WORKFLOW CONCEPT</div>
-    `;
-    card.onclick=()=>{
-      selectBusiness(i);
-      document.querySelector(".detail").scrollIntoView({behavior:"smooth"});
-    };
-    grid.appendChild(card);
-  });
-}
-
-addTrack();
-addGrid();
-selectBusiness(0);
-
-/* AUTO ROTATE ALL 50 */
-let current=0;
-setInterval(()=>{
-  current=(current+1)%businesses.length;
-  selectBusiness(current);
-},3500);
-
-/* PARTICLES */
-const stars=document.getElementById("stars");
-for(let i=0;i<60;i++){
-  const s=document.createElement("i");
-  s.className="star";
-  s.style.left=Math.random()*100+"%";
-  s.style.animationDuration=(6+Math.random()*12)+"s";
-  s.style.animationDelay=(-Math.random()*12)+"s";
-  s.style.opacity=Math.random();
-  stars.appendChild(s);
-}
-
-/* DESKTOP PARALLAX */
-const scene=document.getElementById("scene");
-window.addEventListener("mousemove",(e)=>{
-  if(innerWidth<900)return;
-  const x=(e.clientX/innerWidth-.5)*10;
-  const y=(e.clientY/innerHeight-.5)*7;
-  scene.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+businessSlider.addEventListener("mouseenter",()=>{
+  clearInterval(businessAutoSlide);
 });
 
-/* MOBILE SWIPE TO CHANGE BUSINESS */
-let touchStart=0;
-window.addEventListener("touchstart",e=>{
-  touchStart=e.changedTouches[0].clientX;
+businessSlider.addEventListener("touchstart",()=>{
+  clearInterval(businessAutoSlide);
 },{passive:true});
-
-window.addEventListener("touchend",e=>{
-  const diff=e.changedTouches[0].clientX-touchStart;
-  if(Math.abs(diff)>55){
-    current = diff<0
-      ? (current+1)%businesses.length
-      : (current-1+businesses.length)%businesses.length;
-    selectBusiness(current);
-  }
-},{passive:true});
-</script>
-
-</body>
-</html>
