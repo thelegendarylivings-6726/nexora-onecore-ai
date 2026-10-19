@@ -545,6 +545,23 @@ footer{
   .section{padding:65px 5%}
   footer{flex-direction:column;gap:8px}
 }
+
+/* MARKETING EXECUTION PLATFORM */
+.marketingLab{max-width:1250px;margin:45px auto 0;display:grid;grid-template-columns:.9fr 1.1fr;gap:22px}
+.growthInput,.growthConsole{border:1px solid rgba(82,220,255,.25);border-radius:24px;background:linear-gradient(145deg,#061a31,#020914);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.growthInput label{display:block;font-size:10px;letter-spacing:2px;color:#6eeaff;margin:14px 0 7px}
+.growthInput input,.growthInput select{width:100%;padding:13px;border-radius:9px;border:1px solid #1e526e;background:#03101f;color:white;outline:none}
+.scanResult{display:none;margin-top:18px;padding:16px;border:1px solid rgba(83,255,176,.25);border-radius:14px;background:rgba(14,71,59,.18);color:#bdfbe0;font-size:12px;line-height:1.7}
+.adPhone{width:250px;min-height:410px;margin:auto;border:7px solid #14263a;border-radius:34px;background:#f8fafc;color:#101827;padding:16px;box-shadow:0 0 55px rgba(0,180,255,.16)}
+.adPhone .screenTop{font-size:10px;color:#536273;border-bottom:1px solid #d8e1e8;padding-bottom:10px}
+.adCreative{height:180px;margin:14px 0;border-radius:14px;background:linear-gradient(135deg,#061a35,#0c8dcc);display:flex;align-items:center;justify-content:center;text-align:center;color:white;font-weight:900;padding:20px}
+.liveBadge{display:inline-block;background:#0d9b55;color:white;border-radius:99px;padding:6px 9px;font-size:9px;font-weight:800}
+.metricRow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.metric{padding:12px 7px;text-align:center;border:1px solid rgba(79,213,255,.16);border-radius:12px;background:#041326}.metric b{display:block;font-size:16px}.metric small{font-size:8px;color:#7995ad}
+.executionFlow{max-width:1250px;margin:25px auto 0;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.executionFlow span{padding:11px 14px;border:1px solid rgba(82,219,255,.24);background:#05172b;border-radius:10px;font-size:10px}
+.proofNote{margin-top:14px;color:#7995ad;font-size:10px;text-align:center}
+@media(max-width:800px){.marketingLab{grid-template-columns:1fr}.metricRow{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 
@@ -556,6 +573,7 @@ footer{
     <a href="#home">Home</a>
     <a href="#businesses">50 AI Businesses</a>
     <a href="#how">How It Works</a>
+    <a href="#marketing">AI Marketing</a>
     <a href="#demo">Demo</a>
   </div>
   <button class="navBtn" onclick="goDemo()">Request AI Demo</button>
@@ -670,6 +688,40 @@ footer{
     <div class="flow" id="flow"></div>
   </div>
 </div>
+</section>
+
+
+<section class="section" id="marketing">
+ <div class="sectionTitle">
+  <small>NEXORA AI MARKETING EXECUTION PLATFORM</small>
+  <h2>Don’t Just Run Ads. Watch Them Turn Into Customers.</h2>
+  <p>Plan campaigns, preview creatives, approve execution and follow the journey from ad to lead to customer — from one AI control center.</p>
+ </div>
+ <div class="marketingLab">
+  <div class="growthInput">
+   <small style="color:#5ee4ff;letter-spacing:3px">AI GROWTH SCAN</small>
+   <h3 style="font-size:27px;margin:10px 0">Build a campaign concept in seconds.</h3>
+   <label>BUSINESS / BRAND</label><input id="brandInput" placeholder="Example: Luna Home Bakery">
+   <label>WEBSITE OR PRODUCT</label><input id="siteInput" placeholder="Website or short product description">
+   <label>TARGET COUNTRY</label><input id="countryInput" placeholder="Example: Australia">
+   <label>PRIMARY GOAL</label><select id="goalInput"><option>Generate qualified leads</option><option>Increase online sales</option><option>Get more bookings</option><option>Grow local awareness</option></select>
+   <button class="primary" style="width:100%;margin-top:18px" onclick="runGrowthScan()">GENERATE AI CAMPAIGN CONCEPT →</button>
+   <div class="scanResult" id="scanResult"></div>
+  </div>
+  <div class="growthConsole">
+   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><div><small style="color:#5ee4ff;letter-spacing:2px">LIVE AD PROOF™</small><h3 style="margin-top:6px">Campaign Preview</h3></div><span class="liveBadge">DEMO PREVIEW</span></div>
+   <div class="adPhone">
+    <div class="screenTop">Sponsored • Campaign Preview</div>
+    <div class="adCreative" id="creativePreview">YOUR BUSINESS<br>AI CAMPAIGN</div>
+    <b id="previewHeadline">Turn attention into qualified customers.</b>
+    <p style="font-size:11px;color:#647386;margin:8px 0 14px">AI-generated concept. Customer approval is required before publishing or spend.</p>
+    <button style="width:100%;padding:10px;border:0;border-radius:8px;background:#e8eef4;font-weight:700">Learn More</button>
+   </div>
+   <div class="metricRow"><div class="metric"><b>DEMO</b><small>STATUS</small></div><div class="metric"><b>—</b><small>SPEND</small></div><div class="metric"><b>—</b><small>LEADS</small></div><div class="metric"><b>—</b><small>CUSTOMERS</small></div></div>
+   <div class="proofNote">Live campaigns will show verified platform data where official integrations are connected. Demo values are never presented as real results.</div>
+  </div>
+ </div>
+ <div class="executionFlow"><span>Business Goal</span><b class="arrow">→</b><span>AI Strategy</span><b class="arrow">→</b><span>Creative Arena</span><b class="arrow">→</b><span>Human Approval</span><b class="arrow">→</b><span>Live Ad Proof™</span><b class="arrow">→</b><span>Lead Follow-up</span><b class="arrow">→</b><span>Customer + Revenue</span></div>
 </section>
 
 <section class="section" id="how">
@@ -862,6 +914,17 @@ grid.addEventListener("touchend",e=>{
  const diff=startX-e.changedTouches[0].clientX;
  if(Math.abs(diff)>50) slideBusinesses(diff>0?1:-1);
 },{passive:true});
+
+
+function runGrowthScan(){
+ const brand=(document.getElementById("brandInput").value||"Your business").trim();
+ const country=(document.getElementById("countryInput").value||"your target market").trim();
+ const goal=document.getElementById("goalInput").value;
+ document.getElementById("creativePreview").innerHTML=brand.toUpperCase()+"<br><span style='font-size:12px;font-weight:500'>"+country+"</span>";
+ document.getElementById("previewHeadline").textContent=goal+" — with a campaign built around your business.";
+ const r=document.getElementById("scanResult");r.style.display="block";
+ r.innerHTML="<b>Concept ready.</b><br>1. Audit public marketing footprint<br>2. Build channel + audience hypothesis<br>3. Generate creative variants<br>4. Customer approves before any spend<br>5. Track ad → lead → customer in Live Ad Proof™";
+}
 
 buildBusinesses();
 </script>
