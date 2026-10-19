@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Nexora OneCore AI | Autonomous AI Business Execution</title>
-<meta name="description" content="Nexora OneCore AI builds intelligent AI agents and automation systems for business operations, revenue, customer experience and enterprise workflows.">
+<title>Nexora OneCore AI | Autonomous AI Workforce</title>
 
 <style>
 *{
@@ -14,421 +13,386 @@
   box-sizing:border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
-body{
+html,body{
+  width:100%;
+  height:100%;
   font-family:Arial,Helvetica,sans-serif;
-  background:
-    radial-gradient(circle at 50% 10%,#10245e 0%,#071126 25%,#020611 55%,#000 100%);
-  color:#fff;
+  background:#02050b;
+  color:white;
   overflow-x:hidden;
 }
 
-/* BACKGROUND */
-.grid{
+/* VIDEO BACKGROUND */
+.video-bg{
   position:fixed;
   inset:0;
-  z-index:-3;
-  background-image:
-    linear-gradient(rgba(57,142,255,.06) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(57,142,255,.06) 1px,transparent 1px);
-  background-size:45px 45px;
-  transform:perspective(500px) rotateX(60deg) scale(2);
-  transform-origin:center bottom;
-  opacity:.4;
-}
-
-.glow{
-  position:fixed;
-  width:500px;
-  height:500px;
-  border-radius:50%;
-  background:#146cff;
-  filter:blur(150px);
-  opacity:.12;
-  top:10%;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:-2;
-}
-
-/* NAV */
-nav{
   width:100%;
-  padding:20px 7%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+}
+
+.video-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(90deg,
+      rgba(0,5,15,.92) 0%,
+      rgba(0,7,20,.60) 40%,
+      rgba(0,5,15,.25) 65%,
+      rgba(0,5,15,.55) 100%
+    ),
+    linear-gradient(0deg,
+      rgba(0,4,12,.90) 0%,
+      transparent 45%,
+      rgba(0,4,12,.35) 100%
+    );
+}
+
+/* NAVIGATION */
+nav{
   position:fixed;
   top:0;
-  z-index:50;
-  backdrop-filter:blur(18px);
-  background:rgba(2,6,17,.55);
-  border-bottom:1px solid rgba(255,255,255,.08);
+  left:0;
+  right:0;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 6%;
+  background:rgba(2,7,18,.35);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(91,173,255,.15);
 }
 
 .logo{
+  font-size:20px;
   font-weight:900;
   letter-spacing:2px;
-  font-size:20px;
 }
 
 .logo span{
-  color:#52a7ff;
+  color:#42b6ff;
 }
 
-nav .links{
+.navlinks{
   display:flex;
-  gap:25px;
+  gap:28px;
 }
 
-nav a{
-  color:#cdd9ef;
+.navlinks a{
+  color:#d9e8ff;
   text-decoration:none;
   font-size:14px;
 }
 
+.demo-btn{
+  padding:12px 20px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#0c79ff,#00c6ff);
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+  box-shadow:0 0 30px rgba(0,140,255,.45);
+}
+
 /* HERO */
 .hero{
+  position:relative;
+  z-index:5;
   min-height:100vh;
   display:flex;
-  justify-content:center;
   align-items:center;
-  text-align:center;
-  padding:130px 7% 70px;
-  position:relative;
+  padding:120px 6% 150px;
 }
 
 .hero-content{
-  max-width:1000px;
-  position:relative;
-  z-index:5;
+  max-width:720px;
 }
 
 .badge{
-  display:inline-block;
-  border:1px solid rgba(82,167,255,.45);
-  background:rgba(34,109,255,.09);
-  padding:9px 17px;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 15px;
   border-radius:30px;
+  border:1px solid rgba(74,174,255,.4);
+  background:rgba(0,111,255,.09);
+  color:#74c9ff;
   font-size:12px;
   letter-spacing:2px;
-  color:#8fc8ff;
   margin-bottom:25px;
 }
 
+.live-dot{
+  width:8px;
+  height:8px;
+  background:#42ff87;
+  border-radius:50%;
+  box-shadow:0 0 12px #42ff87;
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.3}
+}
+
 .hero h1{
-  font-size:clamp(55px,11vw,135px);
-  line-height:.85;
-  letter-spacing:-5px;
+  font-size:clamp(58px,9vw,120px);
+  line-height:.83;
   font-weight:900;
-  background:linear-gradient(180deg,#fff 15%,#9fc8ff 55%,#3b77ff 100%);
+  letter-spacing:-5px;
+  background:linear-gradient(180deg,#fff,#b9dcff 45%,#3ca8ff);
   -webkit-background-clip:text;
   color:transparent;
-  text-shadow:0 25px 80px rgba(28,111,255,.25);
+  text-shadow:0 20px 80px rgba(0,111,255,.18);
 }
 
 .hero h2{
+  font-size:clamp(28px,4vw,50px);
   margin-top:25px;
-  font-size:clamp(22px,4vw,46px);
+  line-height:1.08;
 }
 
-.hero h2 span{
-  color:#5aaaff;
+.blue{
+  color:#39afff;
 }
 
-.hero p{
-  max-width:760px;
-  margin:22px auto;
-  line-height:1.8;
-  color:#9cabc5;
+.hero-description{
+  color:#b0c1d8;
   font-size:17px;
+  line-height:1.7;
+  margin-top:22px;
+  max-width:650px;
 }
 
-/* 3D CORE */
-.core-wrap{
-  width:280px;
-  height:280px;
-  margin:45px auto;
-  perspective:800px;
-}
-
-.core{
-  width:100%;
-  height:100%;
-  position:relative;
-  transform-style:preserve-3d;
-  animation:float 5s ease-in-out infinite;
-}
-
-.orbit{
-  position:absolute;
-  inset:25px;
-  border:2px solid rgba(79,159,255,.5);
-  border-radius:50%;
-  box-shadow:
-    0 0 35px rgba(43,128,255,.4),
-    inset 0 0 35px rgba(43,128,255,.2);
-}
-
-.orbit.one{
-  transform:rotateX(65deg) rotateZ(20deg);
-  animation:spin1 8s linear infinite;
-}
-
-.orbit.two{
-  transform:rotateY(70deg) rotateZ(30deg);
-  animation:spin2 7s linear infinite;
-}
-
-.orbit.three{
-  transform:rotateX(45deg) rotateY(45deg);
-  animation:spin1 11s linear infinite reverse;
-}
-
-.ball{
-  position:absolute;
-  width:110px;
-  height:110px;
-  left:85px;
-  top:85px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 30%,#e9f6ff,#4ba7ff 20%,#1448c7 55%,#020817 75%);
-  box-shadow:
-    0 0 35px #2b8cff,
-    0 0 90px rgba(29,111,255,.65);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:55px;
-  font-weight:900;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0) rotateX(4deg);}
-  50%{transform:translateY(-18px) rotateX(-4deg);}
-}
-
-@keyframes spin1{
-  from{transform:rotateX(65deg) rotateZ(0deg);}
-  to{transform:rotateX(65deg) rotateZ(360deg);}
-}
-
-@keyframes spin2{
-  from{transform:rotateY(70deg) rotateZ(0deg);}
-  to{transform:rotateY(70deg) rotateZ(360deg);}
-}
-
-/* BUTTONS */
 .buttons{
   display:flex;
-  justify-content:center;
-  gap:15px;
+  gap:14px;
+  margin-top:30px;
   flex-wrap:wrap;
 }
 
 .btn{
-  display:inline-block;
-  padding:15px 25px;
-  border-radius:12px;
+  padding:15px 24px;
+  border-radius:11px;
   text-decoration:none;
+  color:white;
   font-weight:bold;
-  transition:.3s;
 }
 
 .primary{
-  background:linear-gradient(135deg,#267cff,#604cff);
-  color:#fff;
-  box-shadow:0 10px 40px rgba(38,124,255,.3);
+  background:linear-gradient(135deg,#087cff,#00b8ff);
+  box-shadow:0 12px 40px rgba(0,130,255,.35);
 }
 
 .secondary{
-  border:1px solid #263959;
-  color:#fff;
-  background:rgba(255,255,255,.03);
+  border:1px solid rgba(150,200,255,.35);
+  background:rgba(5,17,37,.45);
+  backdrop-filter:blur(10px);
 }
 
-.btn:hover{
-  transform:translateY(-4px) scale(1.02);
+/* AUTO AGENT PANEL */
+.agent-box{
+  margin-top:45px;
+  width:min(570px,100%);
+  padding:20px 22px;
+  border-radius:17px;
+  border:1px solid rgba(55,164,255,.28);
+  background:rgba(2,12,29,.58);
+  backdrop-filter:blur(16px);
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
-/* SECTIONS */
-section{
-  padding:100px 7%;
+.agent-label{
+  color:#7abfff;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:10px;
 }
 
-.section-title{
+.agent-name{
+  font-size:24px;
+  font-weight:800;
+  min-height:30px;
+}
+
+.agent-action{
+  color:#9db1cb;
+  font-size:14px;
+  margin-top:8px;
+}
+
+/* BUSINESS STRIP */
+.business-strip{
+  position:absolute;
+  z-index:10;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow:hidden;
+  padding:15px 0;
+  border-top:1px solid rgba(72,166,255,.20);
+  background:rgba(1,8,20,.62);
+  backdrop-filter:blur(18px);
+}
+
+.business-track{
+  display:flex;
+  width:max-content;
+  gap:12px;
+  animation:scroll 35s linear infinite;
+}
+
+.business{
+  min-width:175px;
+  padding:13px 17px;
+  border-radius:10px;
+  border:1px solid rgba(83,171,255,.18);
+  background:rgba(5,19,40,.65);
+  white-space:nowrap;
+  font-size:13px;
+  color:#dcecff;
+}
+
+.business b{
+  color:#48b6ff;
+  margin-right:6px;
+}
+
+@keyframes scroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* SECOND SECTION */
+.content{
+  position:relative;
+  z-index:6;
+  background:
+    radial-gradient(circle at 50% 0%,#092251,#030815 45%,#010309);
+  padding:110px 6%;
+}
+
+.title{
+  max-width:850px;
+  margin:auto;
   text-align:center;
-  margin-bottom:55px;
 }
 
-.section-title small{
-  color:#56a9ff;
+.title small{
+  color:#49b7ff;
   letter-spacing:3px;
 }
 
-.section-title h2{
-  font-size:clamp(35px,5vw,58px);
-  margin-top:12px;
+.title h3{
+  font-size:clamp(35px,6vw,65px);
+  margin-top:15px;
 }
 
-.section-title p{
-  color:#8d9bb4;
-  max-width:650px;
-  margin:15px auto;
+.title p{
+  color:#91a4bf;
   line-height:1.7;
+  margin-top:18px;
 }
 
-/* 3D CARDS */
-.cards{
+.grid{
   max-width:1200px;
-  margin:auto;
+  margin:60px auto 0;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:22px;
-  perspective:1200px;
+  gap:20px;
 }
 
 .card{
-  min-height:260px;
-  padding:30px;
-  border-radius:22px;
-  border:1px solid rgba(103,162,255,.18);
-  background:
-    linear-gradient(145deg,rgba(17,35,70,.65),rgba(3,9,23,.8));
-  box-shadow:
-    0 30px 70px rgba(0,0,0,.45),
-    inset 0 1px rgba(255,255,255,.06);
-  transform-style:preserve-3d;
-  transition:.4s;
+  padding:28px;
+  min-height:210px;
+  border-radius:18px;
+  background:linear-gradient(
+    145deg,
+    rgba(13,35,68,.85),
+    rgba(3,10,24,.95)
+  );
+  border:1px solid rgba(67,162,255,.2);
+  transition:.3s;
 }
 
 .card:hover{
-  transform:translateY(-12px) rotateX(5deg) rotateY(-5deg);
-  border-color:#398dff;
-  box-shadow:0 35px 90px rgba(25,104,255,.18);
+  transform:translateY(-8px);
+  border-color:#3daeff;
+  box-shadow:0 25px 70px rgba(0,111,255,.15);
 }
 
-.icon{
-  width:55px;
-  height:55px;
-  border-radius:15px;
-  background:linear-gradient(135deg,#143b80,#226fff);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:25px;
-  margin-bottom:25px;
-  box-shadow:0 12px 35px rgba(39,117,255,.35);
-}
-
-.card h3{
-  font-size:21px;
+.card h4{
+  font-size:20px;
   margin-bottom:12px;
 }
 
 .card p{
-  color:#8d9bb4;
-  line-height:1.7;
+  color:#8fa4c0;
+  line-height:1.6;
+  font-size:14px;
 }
 
-/* FLOW */
-.flow{
-  max-width:1100px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px;
-}
-
-.step{
-  text-align:center;
-  padding:25px 15px;
-  border-radius:18px;
-  background:rgba(12,26,53,.7);
-  border:1px solid rgba(87,151,255,.18);
-}
-
-.number{
-  width:45px;
-  height:45px;
-  margin:0 auto 15px;
-  border-radius:50%;
-  background:#146cff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  box-shadow:0 0 30px rgba(20,108,255,.5);
-}
-
-.step p{
-  color:#8998b2;
-  font-size:13px;
-  margin-top:8px;
+.status{
+  display:inline-block;
+  margin-top:20px;
+  color:#62ff9a;
+  font-size:12px;
 }
 
 /* CTA */
 .cta{
-  max-width:1100px;
-  margin:80px auto;
-  padding:70px 30px;
+  position:relative;
+  z-index:6;
+  padding:100px 6%;
   text-align:center;
-  border-radius:30px;
-  border:1px solid rgba(74,151,255,.25);
-  background:
-    radial-gradient(circle at 50% 0%,rgba(29,112,255,.28),transparent 55%),
-    #050b18;
-  box-shadow:0 30px 100px rgba(0,0,0,.5);
+  background:#020611;
 }
 
-.cta h2{
-  font-size:clamp(32px,5vw,58px);
-  margin-bottom:20px;
+.cta h3{
+  font-size:clamp(35px,5vw,60px);
 }
 
 .cta p{
-  color:#93a1ba;
-  margin-bottom:30px;
-}
-
-footer{
-  border-top:1px solid rgba(255,255,255,.08);
-  padding:35px 7%;
-  text-align:center;
-  color:#65738c;
+  margin:20px auto 30px;
+  color:#95a7bf;
+  max-width:700px;
 }
 
 /* MOBILE */
 @media(max-width:850px){
-  nav .links{
+
+  .navlinks{
     display:none;
   }
 
-  .cards{
-    grid-template-columns:1fr;
+  .demo-btn{
+    padding:10px 13px;
+    font-size:12px;
   }
 
-  .flow{
-    grid-template-columns:1fr;
+  .hero{
+    align-items:flex-end;
+    padding-bottom:170px;
   }
 
   .hero h1{
     letter-spacing:-2px;
   }
 
-  .core-wrap{
-    width:230px;
-    height:230px;
+  .grid{
+    grid-template-columns:1fr;
   }
 
-  .ball{
-    width:90px;
-    height:90px;
-    left:70px;
-    top:70px;
+  .video-overlay{
+    background:
+      linear-gradient(0deg,
+        rgba(0,5,15,.96),
+        rgba(0,5,15,.25) 65%,
+        rgba(0,5,15,.45)
+      );
   }
 }
 </style>
@@ -436,190 +400,308 @@ footer{
 
 <body>
 
-<div class="grid"></div>
-<div class="glow"></div>
+<!-- CINEMATIC AI WORKFORCE VIDEO -->
+<video
+  class="video-bg"
+  autoplay
+  muted
+  loop
+  playsinline
+  preload="auto">
+  <source src="nexora-ai-workforce.mp4" type="video/mp4">
+</video>
+
+<div class="video-overlay"></div>
 
 <nav>
-  <div class="logo">NEXORA <span>ONECORE AI</span></div>
 
-  <div class="links">
-    <a href="#services">Services</a>
-    <a href="#industries">Industries</a>
-    <a href="#process">How It Works</a>
+  <div class="logo">
+    NEXORA <span>ONECORE AI</span>
+  </div>
+
+  <div class="navlinks">
+    <a href="#workforce">AI Workforce</a>
+    <a href="#businesses">Businesses</a>
     <a href="#contact">Contact</a>
   </div>
+
+  <a class="demo-btn" href="#contact">
+    Request Demo →
+  </a>
+
 </nav>
 
-<div class="hero">
+<section class="hero">
+
   <div class="hero-content">
 
-    <div class="badge">AUTONOMOUS AI BUSINESS EXECUTION</div>
+    <div class="badge">
+      <div class="live-dot"></div>
+      AUTONOMOUS AI WORKFORCE
+    </div>
 
     <h1>NEXORA</h1>
 
-    <h2>One Intelligence. <span>Many Businesses.</span></h2>
+    <h2>
+      One Intelligence.<br>
+      <span class="blue">Many Businesses.</span>
+    </h2>
 
-    <p>
-      Nexora OneCore AI designs intelligent AI agents and automation
-      systems that connect business workflows, operations, customer
-      experience and revenue execution.
+    <p class="hero-description">
+      Intelligent AI agents designed to support real business workflows
+      across sales, operations, logistics, facilities, marketing,
+      customer experience and more.
     </p>
-
-    <div class="core-wrap">
-      <div class="core">
-        <div class="orbit one"></div>
-        <div class="orbit two"></div>
-        <div class="orbit three"></div>
-        <div class="ball">N</div>
-      </div>
-    </div>
 
     <div class="buttons">
-      <a class="btn primary" href="#contact">Request a Custom Demo</a>
-      <a class="btn secondary" href="#services">Explore AI Solutions</a>
+      <a class="btn primary" href="#contact">
+        Request a Custom Demo
+      </a>
+
+      <a class="btn secondary" href="#workforce">
+        Explore AI Workforce
+      </a>
+    </div>
+
+    <div class="agent-box">
+
+      <div class="agent-label">
+        ONECORE • AI AGENT ACTIVITY
+      </div>
+
+      <div class="agent-name" id="agentName">
+        Prospecting Agent
+      </div>
+
+      <div class="agent-action" id="agentAction">
+        Discovering companies and identifying relevant business opportunities...
+      </div>
+
     </div>
 
   </div>
-</div>
 
-<section id="services">
+  <div class="business-strip" id="businesses">
 
-  <div class="section-title">
-    <small>AI WORKFORCE</small>
-    <h2>Built to Execute</h2>
-    <p>
-      AI systems designed around real business workflows rather than
-      one-size-fits-all automation.
-    </p>
+    <div class="business-track">
+
+      <div class="business"><b>01</b> Revenue AI</div>
+      <div class="business"><b>02</b> Facilities AI</div>
+      <div class="business"><b>03</b> Logistics AI</div>
+      <div class="business"><b>04</b> E-commerce AI</div>
+      <div class="business"><b>05</b> Hotel AI</div>
+      <div class="business"><b>06</b> Clinic AI</div>
+      <div class="business"><b>07</b> Real Estate AI</div>
+      <div class="business"><b>08</b> Construction AI</div>
+      <div class="business"><b>09</b> Manufacturing AI</div>
+      <div class="business"><b>10</b> Warehouse AI</div>
+      <div class="business"><b>11</b> Fleet AI</div>
+      <div class="business"><b>12</b> Customer Support AI</div>
+      <div class="business"><b>13</b> Marketing AI</div>
+      <div class="business"><b>14</b> Healthcare AI</div>
+      <div class="business"><b>15</b> Recruitment AI</div>
+
+      <!-- DUPLICATE FOR CONTINUOUS LOOP -->
+
+      <div class="business"><b>01</b> Revenue AI</div>
+      <div class="business"><b>02</b> Facilities AI</div>
+      <div class="business"><b>03</b> Logistics AI</div>
+      <div class="business"><b>04</b> E-commerce AI</div>
+      <div class="business"><b>05</b> Hotel AI</div>
+      <div class="business"><b>06</b> Clinic AI</div>
+      <div class="business"><b>07</b> Real Estate AI</div>
+      <div class="business"><b>08</b> Construction AI</div>
+      <div class="business"><b>09</b> Manufacturing AI</div>
+      <div class="business"><b>10</b> Warehouse AI</div>
+      <div class="business"><b>11</b> Fleet AI</div>
+      <div class="business"><b>12</b> Customer Support AI</div>
+      <div class="business"><b>13</b> Marketing AI</div>
+      <div class="business"><b>14</b> Healthcare AI</div>
+      <div class="business"><b>15</b> Recruitment AI</div>
+
+    </div>
   </div>
 
-  <div class="cards">
-
-    <div class="card">
-      <div class="icon">⚡</div>
-      <h3>AI Automation</h3>
-      <p>Automate repetitive workflows, task routing, data processing and operational handoffs.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">↗</div>
-      <h3>Revenue AI</h3>
-      <p>Support lead qualification, sales workflows, follow-ups and revenue operations.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">◎</div>
-      <h3>Operations AI</h3>
-      <p>Coordinate exceptions, teams, requests and complex business operations.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">◈</div>
-      <h3>Marketing AI</h3>
-      <p>Creative concepts, campaign workflows, content operations and performance intelligence.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">◉</div>
-      <h3>Customer Experience AI</h3>
-      <p>Intelligent enquiry handling, support workflows, appointment and response automation.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">N</div>
-      <h3>Custom AI Agents</h3>
-      <p>Purpose-built agents designed around your company's approved systems and workflows.</p>
-    </div>
-
-  </div>
 </section>
 
-<section id="industries">
+<section class="content" id="workforce">
 
-  <div class="section-title">
-    <small>GLOBAL BUSINESS</small>
-    <h2>AI Across Industries</h2>
-  </div>
+  <div class="title">
 
-  <div class="cards">
+    <small>NEXORA BUSINESS FACTORY</small>
 
-    <div class="card"><h3>Facilities Management</h3><p>Maintenance requests, exception handling and multi-site operations.</p></div>
-
-    <div class="card"><h3>Logistics</h3><p>Quote intake, shipment workflows, dispatch support and operational coordination.</p></div>
-
-    <div class="card"><h3>E-commerce</h3><p>Customer operations, product workflows and intelligent automation.</p></div>
-
-    <div class="card"><h3>Real Estate</h3><p>Lead qualification, sales workflows and property operations.</p></div>
-
-    <div class="card"><h3>Healthcare</h3><p>Administrative workflow automation with controlled human oversight.</p></div>
-
-    <div class="card"><h3>Enterprise</h3><p>Custom AI orchestration for complex teams, systems and workflows.</p></div>
-
-  </div>
-</section>
-
-<section id="process">
-
-  <div class="section-title">
-    <small>ONECORE PROCESS</small>
-    <h2>From Workflow to Execution</h2>
-  </div>
-
-  <div class="flow">
-
-    <div class="step">
-      <div class="number">1</div>
-      <strong>Understand</strong>
-      <p>Map the workflow.</p>
-    </div>
-
-    <div class="step">
-      <div class="number">2</div>
-      <strong>Design</strong>
-      <p>Build the AI solution.</p>
-    </div>
-
-    <div class="step">
-      <div class="number">3</div>
-      <strong>Integrate</strong>
-      <p>Connect approved systems.</p>
-    </div>
-
-    <div class="step">
-      <div class="number">4</div>
-      <strong>Execute</strong>
-      <p>Automate the workflow.</p>
-    </div>
-
-    <div class="step">
-      <div class="number">5</div>
-      <strong>Improve</strong>
-      <p>Measure and optimize.</p>
-    </div>
-
-  </div>
-</section>
-
-<section id="contact">
-
-  <div class="cta">
-    <h2>Show Us the Workflow.<br>We'll Show You the AI Solution.</h2>
+    <h3>
+      AI Agents Built Around
+      Real Business Workflows
+    </h3>
 
     <p>
-      Start with a focused workflow and discover where intelligent
-      automation can create practical business value.
+      Each Nexora AI agent is designed for a specific operational role,
+      with human authorization retained where required.
     </p>
 
-    <a class="btn primary" href="mailto:nexoraonecoreai@gmail.com">
-      Request a Custom Demo
-    </a>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h4>🔎 Prospecting Agent</h4>
+      <p>
+        Researches public business information, identifies opportunities
+        and prepares qualified prospect intelligence.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
+    <div class="card">
+      <h4>📈 Sales Agent</h4>
+      <p>
+        Supports lead qualification, demonstrations, follow-ups and
+        sales workflow execution.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
+    <div class="card">
+      <h4>📣 Marketing Agent</h4>
+      <p>
+        Supports content, creative concepts, campaign planning and
+        marketing operations.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
+    <div class="card">
+      <h4>🚚 Logistics Agent</h4>
+      <p>
+        Handles quote intake, shipment information, dispatch workflows
+        and operational exceptions.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
+    <div class="card">
+      <h4>🏢 Facilities Agent</h4>
+      <p>
+        Supports maintenance requests, triage, technician coordination
+        and multi-site workflow orchestration.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
+    <div class="card">
+      <h4>🎧 Support Agent</h4>
+      <p>
+        Helps classify enquiries, prepare responses, route requests and
+        escalate cases requiring human attention.
+      </p>
+      <span class="status">● AI WORKFLOW</span>
+    </div>
+
   </div>
 
 </section>
 
-<footer>
-  © 2026 Nexora OneCore AI. All rights reserved.
-</footer>
+<section class="cta" id="contact">
+
+  <h3>
+    Show Us the Workflow.<br>
+    <span class="blue">We'll Show You the AI Solution.</span>
+  </h3>
+
+  <p>
+    Start with one focused workflow and see how Nexora OneCore AI can
+    turn it into an intelligent execution system.
+  </p>
+
+  <!-- Replace this email with your verified business email -->
+  <a class="btn primary" href="mailto:nexoraonecoreai@gmail.com">
+    Request a Custom Demo
+  </a>
+
+</section>
+
+<script>
+
+const agents = [
+
+  [
+    "Prospecting Agent",
+    "Discovering companies and identifying relevant business opportunities..."
+  ],
+
+  [
+    "Sales Agent",
+    "Qualifying enquiries and preparing sales workflows..."
+  ],
+
+  [
+    "Marketing Agent",
+    "Preparing campaigns, content and creative workflows..."
+  ],
+
+  [
+    "Logistics Agent",
+    "Processing quote requests and coordinating shipment workflows..."
+  ],
+
+  [
+    "Facilities Agent",
+    "Triaging maintenance requests and coordinating operations..."
+  ],
+
+  [
+    "E-commerce Agent",
+    "Supporting product, order and customer workflows..."
+  ],
+
+  [
+    "Customer Support Agent",
+    "Classifying requests and routing customer enquiries..."
+  ],
+
+  [
+    "Analytics Agent",
+    "Turning operational data into actionable business intelligence..."
+  ],
+
+  [
+    "Real Estate Agent",
+    "Qualifying property enquiries and supporting sales workflows..."
+  ],
+
+  [
+    "Healthcare Operations Agent",
+    "Supporting approved administrative healthcare workflows..."
+  ]
+
+];
+
+let agentIndex = 0;
+
+setInterval(()=>{
+
+  agentIndex = (agentIndex + 1) % agents.length;
+
+  const name = document.getElementById("agentName");
+  const action = document.getElementById("agentAction");
+
+  name.style.opacity = 0;
+  action.style.opacity = 0;
+
+  setTimeout(()=>{
+
+    name.textContent = agents[agentIndex][0];
+    action.textContent = agents[agentIndex][1];
+
+    name.style.opacity = 1;
+    action.style.opacity = 1;
+
+  },300);
+
+},3500);
+
+</script>
 
 </body>
 </html>
