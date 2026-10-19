@@ -2,759 +2,640 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Nexora OneCore AI | Autonomous AI Workforce</title>
-
-<meta name="description" content="Nexora OneCore AI builds intelligent AI agents and automation systems for business operations, sales, logistics, facilities, marketing and more.">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020713">
+<title>Nexora OneCore AI — AI Business Command Center</title>
+<meta name="description" content="Nexora OneCore AI — interactive AI workforce and business automation command center.">
 
 <style>
 :root{
-  --blue:#00a8ff;
-  --cyan:#4de7ff;
-  --green:#58ff9a;
-  --dark:#020610;
-  --panel:rgba(4,16,36,.72);
+  --bg:#020713;
+  --panel:rgba(5,18,42,.76);
+  --line:rgba(65,198,255,.28);
+  --cyan:#55e6ff;
+  --blue:#178cff;
+  --green:#67ffad;
+  --text:#f4fbff;
+  --muted:#9cb4cc;
 }
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-  font-family:Arial,Helvetica,sans-serif;
+  margin:0;
+  font-family:Inter,Arial,Helvetica,sans-serif;
   background:#01040b;
-  color:white;
+  color:var(--text);
   overflow-x:hidden;
 }
+button,a{font:inherit}
 
-/* =========================
-   NAV
-========================= */
-
+/* NAV */
 nav{
   position:fixed;
-  z-index:100;
-  top:0;
-  left:0;
-  width:100%;
+  z-index:1000;
+  top:0;left:0;right:0;
+  height:70px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  padding:18px 5%;
-  background:rgba(1,7,18,.55);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(65,176,255,.18);
+  justify-content:space-between;
+  padding:0 5%;
+  background:linear-gradient(180deg,rgba(1,6,18,.94),rgba(1,6,18,.35));
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(90,211,255,.13);
 }
-
-.logo{
+.brand{
   font-weight:900;
   letter-spacing:2px;
-  font-size:20px;
 }
-
-.logo span{
-  color:var(--cyan);
-}
-
-.links{
+.brand b{color:var(--cyan)}
+.navright{
   display:flex;
-  gap:25px;
+  align-items:center;
+  gap:20px;
 }
-
-.links a{
-  color:#d8e8ff;
+.navright a{
+  color:#d8edff;
   text-decoration:none;
-  font-size:14px;
+  font-size:13px;
+}
+.btn{
+  border:1px solid rgba(98,220,255,.45);
+  color:white!important;
+  background:linear-gradient(135deg,#086ee8,#00bde9);
+  padding:11px 17px;
+  border-radius:11px;
+  box-shadow:0 0 30px rgba(0,159,255,.22);
 }
 
-.demo{
-  padding:12px 19px;
-  border-radius:10px;
-  text-decoration:none;
-  color:white;
-  font-weight:700;
-  background:linear-gradient(135deg,#087cff,#00c8ff);
-  box-shadow:0 0 30px rgba(0,153,255,.35);
-}
-
-/* =========================
-   COMMAND CENTER HERO
-========================= */
-
-.hero{
+/* MAIN WORLD */
+.world{
   position:relative;
   min-height:100vh;
   overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:100px 5% 120px;
-
   background:
-    radial-gradient(circle at 50% 43%,rgba(0,121,255,.27),transparent 25%),
-    radial-gradient(circle at 20% 70%,rgba(0,79,255,.15),transparent 30%),
-    linear-gradient(180deg,#06132c 0%,#020817 55%,#01040b 100%);
+    radial-gradient(circle at 50% 43%,rgba(0,129,255,.24),transparent 24%),
+    radial-gradient(circle at 50% 100%,rgba(0,93,255,.17),transparent 45%),
+    linear-gradient(180deg,#06162d,#020713 70%,#01040b);
 }
-
-/* perspective floor */
-
-.floor{
+.world:before{
+  content:"";
   position:absolute;
-  width:180%;
-  height:65%;
-  bottom:-28%;
-  left:-40%;
-  transform:perspective(650px) rotateX(67deg);
+  inset:0;
   background-image:
-    linear-gradient(rgba(0,167,255,.15) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,167,255,.15) 1px,transparent 1px);
-  background-size:55px 55px;
-  mask-image:linear-gradient(to top,#000,transparent);
+    linear-gradient(rgba(73,186,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(73,186,255,.035) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:linear-gradient(to bottom,transparent,#000 30%,#000);
 }
-
-/* floating particles */
-
-.particles{
+.stars{
   position:absolute;
   inset:0;
   overflow:hidden;
 }
-
-.particle{
+.star{
   position:absolute;
-  width:3px;
-  height:3px;
-  background:#61dfff;
+  width:2px;height:2px;
+  background:#9beeff;
   border-radius:50%;
-  box-shadow:0 0 10px #00b7ff;
-  animation:particleMove linear infinite;
+  box-shadow:0 0 9px #3fdcff;
+  animation:rise linear infinite;
+}
+@keyframes rise{
+  from{transform:translateY(105vh);opacity:0}
+  15%{opacity:.9}
+  to{transform:translateY(-10vh);opacity:0}
 }
 
-@keyframes particleMove{
-  from{
-    transform:translateY(100vh);
-    opacity:0;
-  }
-  20%{opacity:1}
-  to{
-    transform:translateY(-20vh);
-    opacity:0;
-  }
-}
-
-/* =========================
-   CENTER CORE
-========================= */
-
-.core-area{
+/* HERO TEXT */
+.heroCopy{
   position:absolute;
-  z-index:5;
-  left:50%;
-  top:48%;
-  transform:translate(-50%,-50%);
-  width:390px;
-  height:390px;
-}
-
-.core-globe{
-  position:absolute;
-  width:210px;
-  height:210px;
-  left:90px;
+  z-index:20;
   top:90px;
+  left:50%;
+  width:min(900px,94%);
+  transform:translateX(-50%);
+  text-align:center;
+}
+.pill{
+  display:inline-block;
+  border:1px solid rgba(80,215,255,.35);
+  background:rgba(8,101,177,.12);
+  padding:7px 14px;
+  border-radius:100px;
+  color:#7beaff;
+  font-size:10px;
+  letter-spacing:2.4px;
+}
+.heroCopy h1{
+  margin:11px 0 5px;
+  font-size:clamp(34px,5vw,72px);
+  line-height:.98;
+  letter-spacing:-2.5px;
+}
+.heroCopy h1 span{
+  color:#4cd8ff;
+  text-shadow:0 0 28px rgba(0,179,255,.35);
+}
+.heroCopy p{
+  margin:12px auto 0;
+  max-width:700px;
+  color:#a4b9cf;
+  font-size:14px;
+}
+
+/* 3D STAGE */
+.stage{
+  position:absolute;
+  z-index:4;
+  inset:195px 0 105px;
+  perspective:1000px;
+}
+.scene{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+  transition:transform .18s ease-out;
+}
+
+/* FLOOR */
+.floor{
+  position:absolute;
+  left:-20%;
+  width:140%;
+  height:80%;
+  bottom:-45%;
+  transform:rotateX(68deg);
+  transform-origin:center top;
+  background-image:
+    linear-gradient(rgba(0,190,255,.19) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,190,255,.19) 1px,transparent 1px);
+  background-size:55px 55px;
+  mask-image:linear-gradient(to bottom,#000,transparent 80%);
+  box-shadow:0 -30px 100px rgba(0,128,255,.12);
+}
+
+/* CENTRAL CORE */
+.coreWrap{
+  position:absolute;
+  z-index:10;
+  width:360px;
+  height:360px;
+  left:50%;
+  top:44%;
+  transform:translate(-50%,-50%);
+}
+.ring{
+  position:absolute;
   border-radius:50%;
+  border:1px solid rgba(75,220,255,.65);
+  box-shadow:0 0 25px rgba(0,171,255,.25),inset 0 0 25px rgba(0,171,255,.08);
+}
+.r1{inset:5px;animation:spin 14s linear infinite}
+.r2{inset:34px;border-style:dashed;animation:spin 9s linear infinite reverse}
+.r3{
+  left:30px;right:30px;top:110px;height:115px;
+  transform:rotateX(70deg);
+  animation:ringPulse 3s ease-in-out infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ringPulse{50%{opacity:.35;transform:rotateX(70deg) scale(1.1)}}
 
-  background:
-    radial-gradient(circle at 35% 25%,#dffcff 0%,#2ecbff 8%,#075be5 32%,#031331 68%);
-
-  box-shadow:
-    0 0 35px #00a8ff,
-    0 0 90px rgba(0,119,255,.75),
-    inset -25px -20px 45px #010817;
-
+.globe{
+  position:absolute;
+  width:205px;height:205px;
+  left:77px;top:77px;
+  border-radius:50%;
   display:flex;
   flex-direction:column;
-  align-items:center;
   justify-content:center;
-
-  animation:coreFloat 4s ease-in-out infinite;
+  align-items:center;
+  background:
+    radial-gradient(circle at 32% 25%,#c6fbff 0 3%,#2fcfff 7%,#096fe7 27%,#052357 55%,#01091a 77%);
+  box-shadow:
+    0 0 30px #0aaeff,
+    0 0 90px rgba(0,113,255,.55),
+    inset -30px -30px 50px rgba(0,0,0,.55);
+  animation:float 3.7s ease-in-out infinite;
 }
-
-.core-globe strong{
-  font-size:31px;
+.globe:before,.globe:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(121,233,255,.35);
+}
+.globe:before{inset:25px 5px}
+.globe:after{inset:5px 45px}
+.globe strong{
+  font-size:27px;
   letter-spacing:2px;
 }
-
-.core-globe span{
-  color:#75e6ff;
-  font-size:13px;
+.globe span{
+  color:#75eaff;
   letter-spacing:3px;
-  margin-top:5px;
+  font-size:10px;
 }
+@keyframes float{50%{transform:translateY(-10px)}}
 
-@keyframes coreFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
-}
-
-.orbit{
+/* ROBOTS */
+.robotStation{
   position:absolute;
-  border:2px solid rgba(67,205,255,.38);
-  border-radius:50%;
-  box-shadow:0 0 25px rgba(0,167,255,.35);
+  z-index:7;
+  width:190px;
+  min-height:150px;
+  padding:13px;
+  border:1px solid rgba(74,202,255,.28);
+  border-radius:18px;
+  background:linear-gradient(145deg,rgba(10,37,71,.83),rgba(2,10,24,.86));
+  backdrop-filter:blur(12px);
+  box-shadow:0 20px 45px rgba(0,0,0,.4),0 0 30px rgba(0,132,255,.08);
 }
-
-.orbit1{
-  inset:45px;
-  animation:spin 9s linear infinite;
-}
-
-.orbit2{
-  inset:15px;
-  border-style:dashed;
-  animation:spin 14s linear infinite reverse;
-}
-
-.orbit3{
-  inset:70px 10px;
-  transform:rotateX(70deg);
-  animation:pulseOrbit 4s ease-in-out infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-@keyframes pulseOrbit{
-  50%{
-    opacity:.35;
-    transform:scale(1.08);
-  }
-}
-
-/* =========================
-   ROBOT
-========================= */
+.rs1{left:5%;top:12%}
+.rs2{right:5%;top:12%}
+.rs3{left:8%;top:55%}
+.rs4{right:8%;top:55%}
+.rs5{left:25%;bottom:2%}
+.rs6{right:25%;bottom:2%}
 
 .robot{
-  width:82px;
-  height:115px;
+  width:66px;
+  height:78px;
+  margin:0 auto 4px;
   position:relative;
-  margin:auto;
-  animation:robotWork 2.8s ease-in-out infinite;
+  animation:robotWork 2.4s ease-in-out infinite;
 }
-
-@keyframes robotWork{
-  0%,100%{transform:translateY(0) rotate(0)}
-  50%{transform:translateY(-5px) rotate(1deg)}
-}
-
-.head{
-  width:52px;
-  height:42px;
+.robotHead{
+  width:48px;height:37px;
   margin:auto;
-  border-radius:18px 18px 13px 13px;
-  border:2px solid #8eeaff;
-  background:linear-gradient(145deg,#d9f6ff,#567795 45%,#071323);
-  box-shadow:0 0 17px #00bfff;
   position:relative;
+  border-radius:17px 17px 11px 11px;
+  border:1px solid #91ecff;
+  background:linear-gradient(145deg,#c7edf8,#466782 45%,#071421);
+  box-shadow:0 0 15px rgba(0,202,255,.65);
 }
-
-.face{
+.robotFace{
   position:absolute;
-  left:7px;
-  right:7px;
-  top:10px;
-  height:18px;
+  left:6px;right:6px;top:9px;height:16px;
   border-radius:10px;
   background:#020812;
 }
-
-.eye{
+.robotFace:before,.robotFace:after{
+  content:"";
   position:absolute;
-  width:7px;
-  height:4px;
-  top:7px;
-  background:#4ce7ff;
-  box-shadow:0 0 8px #00c8ff;
+  top:6px;
+  width:6px;height:3px;
+  background:#62eaff;
+  box-shadow:0 0 7px #00d9ff;
 }
-
-.eye.left{left:8px}
-.eye.right{right:8px}
-
-.body{
-  width:62px;
-  height:62px;
-  margin:-2px auto 0;
-  border-radius:13px 13px 22px 22px;
-  background:linear-gradient(145deg,#b9d9ea,#365572 42%,#07111f);
-  border:1px solid #70dfff;
+.robotFace:before{left:7px}
+.robotFace:after{right:7px}
+.robotBody{
+  width:58px;height:43px;
+  margin:-1px auto;
+  border-radius:10px 10px 19px 19px;
+  border:1px solid #60c8e7;
+  background:linear-gradient(145deg,#8cb2c8,#24435d 50%,#06111d);
   position:relative;
-  box-shadow:0 0 18px rgba(0,174,255,.35);
 }
-
-.body:after{
+.robotBody:after{
   content:"N";
   position:absolute;
-  left:50%;
-  top:13px;
+  left:50%;top:9px;
   transform:translateX(-50%);
-  color:#62eaff;
-  font-size:23px;
   font-weight:900;
-  text-shadow:0 0 10px #00aaff;
+  color:#62eaff;
+  text-shadow:0 0 8px #00bfff;
 }
-
-/* =========================
-   AGENT STATIONS
-========================= */
-
-.station{
-  position:absolute;
-  z-index:8;
-  width:255px;
-  padding:16px;
-  border-radius:17px;
-
-  background:
-    linear-gradient(145deg,rgba(7,29,60,.86),rgba(2,9,23,.90));
-
-  border:1px solid rgba(65,188,255,.45);
-
-  box-shadow:
-    0 20px 50px rgba(0,0,0,.45),
-    0 0 25px rgba(0,135,255,.12);
-
-  backdrop-filter:blur(12px);
-
-  transition:.4s;
+@keyframes robotWork{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px) rotate(1deg)}
 }
-
-.station:hover{
-  transform:scale(1.06);
-  border-color:#66e6ff;
-  box-shadow:0 0 45px rgba(0,174,255,.25);
-}
-
-.station h3{
-  color:#72ddff;
-  font-size:15px;
-  margin:10px 0 8px;
-}
-
-.station p{
-  color:#9eb3cc;
+.robotStation h4{
+  color:#6ee5ff;
   font-size:11px;
-  line-height:1.5;
+  margin:6px 0;
+  text-align:center;
+  letter-spacing:.4px;
 }
-
-.task{
-  margin-top:9px;
-  font-size:10px;
-  color:#63ff9d;
+.screen{
+  height:29px;
+  border:1px solid rgba(58,209,255,.28);
+  border-radius:7px;
+  overflow:hidden;
+  position:relative;
+  background:#031020;
 }
+.screen:after{
+  content:"";
+  position:absolute;
+  left:-50%;top:0;
+  width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(81,225,255,.35),transparent);
+  animation:scan 2s linear infinite;
+}
+@keyframes scan{to{left:110%}}
 
-.s1{left:4%;top:23%}
-.s2{right:4%;top:23%}
-.s3{left:8%;bottom:20%}
-.s4{right:8%;bottom:20%}
-.s5{left:27%;bottom:7%}
-.s6{right:27%;bottom:7%}
-
-/* data lines */
-
-.line{
+/* CONNECTIONS */
+.beam{
   position:absolute;
   z-index:3;
   height:1px;
-  background:linear-gradient(90deg,transparent,#00c8ff,transparent);
   transform-origin:left center;
-  opacity:.45;
-  animation:dataPulse 2s infinite;
+  background:linear-gradient(90deg,transparent,#44dfff,#168aff,transparent);
+  filter:drop-shadow(0 0 6px #00bfff);
+  animation:beamPulse 1.8s infinite;
 }
+.b1{width:32%;left:19%;top:34%;transform:rotate(8deg)}
+.b2{width:32%;right:19%;top:34%;transform:rotate(-8deg)}
+.b3{width:30%;left:21%;top:67%;transform:rotate(-9deg)}
+.b4{width:30%;right:21%;top:67%;transform:rotate(9deg)}
+@keyframes beamPulse{50%{opacity:.25}}
 
-@keyframes dataPulse{
-  50%{
-    opacity:1;
-    box-shadow:0 0 12px #00bfff;
-  }
-}
-
-.l1{width:31%;left:20%;top:38%;transform:rotate(8deg)}
-.l2{width:31%;right:20%;top:38%;transform:rotate(-8deg)}
-.l3{width:31%;left:22%;top:65%;transform:rotate(-10deg)}
-.l4{width:31%;right:22%;top:65%;transform:rotate(10deg)}
-
-/* =========================
-   HERO TEXT
-========================= */
-
-.hero-title{
+/* ACTIVE BUSINESS PANEL */
+.focusPanel{
   position:absolute;
-  z-index:12;
-  top:13%;
+  z-index:30;
   left:50%;
+  bottom:92px;
   transform:translateX(-50%);
+  width:min(720px,90%);
+  border:1px solid rgba(91,221,255,.42);
+  border-radius:18px;
+  background:rgba(3,14,34,.82);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 45px rgba(0,137,255,.17);
+  padding:17px 20px;
   text-align:center;
-  width:95%;
-  pointer-events:none;
 }
-
-.badge{
-  display:inline-block;
-  padding:7px 14px;
-  border-radius:25px;
-  background:rgba(0,126,255,.10);
-  border:1px solid rgba(67,191,255,.35);
-  color:#75ddff;
+.focusTop{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:9px;
+  color:#64ffad;
   font-size:10px;
   letter-spacing:2px;
 }
-
-.hero-title h1{
-  font-size:clamp(35px,6vw,75px);
-  margin-top:8px;
-  letter-spacing:-2px;
+.dot{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:#64ffad;
+  box-shadow:0 0 10px #64ffad;
+  animation:blink 1.2s infinite;
 }
-
-.hero-title h1 span{
-  color:#39bfff;
+@keyframes blink{50%{opacity:.25}}
+.focusPanel h2{
+  margin:8px 0 5px;
+  font-size:clamp(20px,3vw,33px);
+  color:#eafaff;
 }
-
-.hero-title p{
-  color:#9fb3ca;
-  margin-top:7px;
-  font-size:14px;
-}
-
-/* =========================
-   LIVE PANEL
-========================= */
-
-.live-panel{
-  position:absolute;
-  z-index:15;
-  right:3%;
-  top:49%;
-  width:205px;
-  padding:15px;
-  border-radius:15px;
-  background:rgba(1,10,24,.80);
-  border:1px solid rgba(70,197,255,.35);
-  backdrop-filter:blur(14px);
-}
-
-.live-panel h4{
-  color:#64ff9a;
+.focusPanel p{
+  margin:0;
+  color:#91aac2;
   font-size:12px;
-  margin-bottom:10px;
+  line-height:1.5;
 }
 
-.live-row{
-  display:flex;
-  justify-content:space-between;
-  font-size:10px;
-  color:#9db2cc;
-  margin:7px 0;
-}
-
-.live-row span:last-child{
-  color:#60eaff;
-}
-
-/* =========================
-   BUSINESS TICKER
-========================= */
-
-.ticker{
+/* 50 BUSINESS STRIP */
+.businessDock{
   position:absolute;
-  z-index:20;
+  z-index:40;
   bottom:0;
-  left:0;
-  width:100%;
+  left:0;right:0;
+  height:78px;
+  background:rgba(1,7,18,.86);
+  border-top:1px solid rgba(79,204,255,.22);
+  backdrop-filter:blur(17px);
   overflow:hidden;
-  padding:13px 0;
-
-  background:rgba(1,8,20,.76);
-  border-top:1px solid rgba(55,175,255,.20);
-  backdrop-filter:blur(15px);
 }
-
-.track{
+.businessTrack{
+  height:100%;
   display:flex;
+  align-items:center;
+  gap:9px;
   width:max-content;
-  animation:ticker 38s linear infinite;
+  padding:0 8px;
+  animation:moveBusinesses 95s linear infinite;
 }
-
-.business{
-  min-width:185px;
-  margin:0 6px;
-  padding:12px;
-  text-align:center;
-  border-radius:10px;
-  background:rgba(6,25,51,.72);
-  border:1px solid rgba(55,172,255,.16);
-  color:#dcecff;
-  font-size:12px;
+.biz{
+  width:210px;
+  flex:none;
+  padding:11px 12px;
+  border-radius:11px;
+  border:1px solid rgba(63,182,255,.18);
+  background:rgba(6,25,49,.76);
+  color:#d8eaff;
+  font-size:11px;
+  white-space:nowrap;
+  transition:.3s;
 }
-
-.business span{
-  color:#49c7ff;
+.biz b{
+  color:#4edaff;
+  margin-right:7px;
 }
-
-@keyframes ticker{
+.biz.active{
+  border-color:#5be5ff;
+  background:rgba(9,85,141,.35);
+  box-shadow:0 0 22px rgba(0,190,255,.22);
+}
+@keyframes moveBusinesses{
   to{transform:translateX(-50%)}
 }
 
-/* =========================
-   WORKFORCE SECTION
-========================= */
-
-.workforce{
+/* BUSINESS EXPLORER */
+.explorer{
   position:relative;
-  z-index:30;
-  padding:100px 5%;
+  padding:95px 5%;
   background:
-    radial-gradient(circle at 50% 0%,rgba(0,98,255,.18),transparent 35%),
+    radial-gradient(circle at 50% 0,rgba(0,106,255,.15),transparent 34%),
     #020610;
 }
-
-.section-title{
-  text-align:center;
-  max-width:800px;
+.heading{
+  max-width:850px;
   margin:auto;
+  text-align:center;
 }
-
-.section-title small{
-  color:#4ac7ff;
+.heading small{
+  color:#5adfff;
   letter-spacing:3px;
 }
-
-.section-title h2{
-  margin-top:12px;
-  font-size:clamp(35px,5vw,60px);
+.heading h2{
+  font-size:clamp(32px,5vw,58px);
+  margin:12px 0;
 }
-
-.section-title p{
-  margin-top:15px;
-  color:#899db7;
+.heading p{
+  color:#91a7be;
   line-height:1.7;
 }
-
-.cards{
-  max-width:1200px;
-  margin:55px auto 0;
+.grid{
+  max-width:1250px;
+  margin:45px auto 0;
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+  grid-template-columns:repeat(5,1fr);
+  gap:11px;
 }
-
-.card{
-  min-height:220px;
-  padding:25px;
-  border-radius:18px;
-  border:1px solid rgba(66,168,255,.17);
-  background:linear-gradient(145deg,#081a35,#030916);
-  transition:.35s;
+.businessCard{
+  position:relative;
+  min-height:135px;
+  padding:16px;
+  border-radius:14px;
+  border:1px solid rgba(68,180,255,.16);
+  background:linear-gradient(145deg,#071a33,#030916);
+  overflow:hidden;
+  cursor:pointer;
+  transition:.28s;
 }
-
-.card:hover{
-  transform:translateY(-9px);
-  border-color:#43bfff;
-  box-shadow:0 25px 60px rgba(0,119,255,.15);
+.businessCard:after{
+  content:"";
+  position:absolute;
+  left:-100%;top:0;
+  width:80%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(77,221,255,.08),transparent);
+  transition:.5s;
 }
-
-.card-icon{
-  font-size:30px;
-  margin-bottom:18px;
+.businessCard:hover{
+  transform:translateY(-6px);
+  border-color:#4fdcff;
+  box-shadow:0 15px 45px rgba(0,128,255,.12);
 }
-
-.card h3{
-  margin-bottom:10px;
-}
-
-.card p{
-  color:#8fa3bd;
-  font-size:14px;
-  line-height:1.65;
-}
-
-.active{
-  display:inline-block;
-  margin-top:18px;
-  color:#5dff9b;
+.businessCard:hover:after{left:130%}
+.num{
+  color:#49d9ff;
   font-size:10px;
-  letter-spacing:1px;
-}
-
-/* =========================
-   ACTIVITY
-========================= */
-
-.activity{
-  padding:90px 5%;
-  background:#01040b;
-}
-
-.activity-box{
-  max-width:1000px;
-  margin:auto;
-  padding:35px;
-  border-radius:25px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(0,116,255,.18),transparent 50%),
-    #051024;
-  border:1px solid rgba(69,179,255,.2);
-  text-align:center;
-}
-
-.activity-box small{
-  color:#59d3ff;
   letter-spacing:2px;
 }
-
-#agentName{
-  margin-top:15px;
-  font-size:clamp(28px,5vw,48px);
-  transition:.3s;
+.businessCard h3{
+  font-size:13px;
+  line-height:1.4;
+  margin:12px 0 0;
+}
+.status{
+  position:absolute;
+  bottom:13px;
+  left:16px;
+  color:#62ffac;
+  font-size:9px;
 }
 
-#agentTask{
-  color:#9eb0c7;
-  margin-top:12px;
-  transition:.3s;
+/* DETAIL */
+.detail{
+  padding:95px 5%;
+  background:#01040b;
 }
-
-/* =========================
-   CTA
-========================= */
-
-.cta{
-  padding:100px 5%;
-  text-align:center;
+.detailBox{
+  max-width:1000px;
+  margin:auto;
+  padding:38px;
+  border-radius:25px;
+  border:1px solid rgba(70,199,255,.22);
   background:
-    radial-gradient(circle at center,rgba(0,111,255,.20),transparent 40%),
+    radial-gradient(circle at 50% 0,rgba(0,119,255,.17),transparent 50%),
+    #051025;
+  text-align:center;
+}
+.detailBox small{
+  color:#62e5ff;
+  letter-spacing:3px;
+}
+#detailName{
+  font-size:clamp(27px,4vw,46px);
+  margin:14px 0 10px;
+}
+#detailTask{
+  max-width:720px;
+  margin:auto;
+  color:#9bb0c6;
+  line-height:1.7;
+}
+.flow{
+  margin:28px auto 0;
+  display:flex;
+  max-width:850px;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+}
+.flow span{
+  border:1px solid rgba(76,207,255,.25);
+  background:rgba(4,27,54,.65);
+  padding:10px 13px;
+  border-radius:9px;
+  color:#bdeeff;
+  font-size:11px;
+}
+.arrow{color:#3ed8ff}
+
+/* CTA */
+.cta{
+  text-align:center;
+  padding:100px 5%;
+  background:
+    radial-gradient(circle,rgba(0,118,255,.19),transparent 40%),
     #020610;
 }
-
 .cta h2{
-  font-size:clamp(35px,5vw,60px);
+  font-size:clamp(34px,5vw,60px);
+  margin:0;
 }
-
-.cta h2 span{
-  color:#42c8ff;
-}
-
+.cta h2 span{color:#4cdaff}
 .cta p{
-  color:#91a4bd;
-  margin:18px auto 30px;
   max-width:650px;
+  margin:18px auto 28px;
+  color:#91a8bf;
+  line-height:1.6;
 }
-
-.cta-button{
+.ctaBtn{
   display:inline-block;
-  padding:16px 25px;
-  color:white;
   text-decoration:none;
-  font-weight:bold;
-  border-radius:12px;
-  background:linear-gradient(135deg,#087dff,#00c5ff);
-  box-shadow:0 10px 40px rgba(0,136,255,.30);
+  color:#fff;
+  font-weight:800;
+  padding:15px 23px;
+  border-radius:11px;
+  background:linear-gradient(135deg,#0878f5,#00c4e9);
+  box-shadow:0 10px 40px rgba(0,139,255,.25);
 }
-
 footer{
   padding:30px;
   text-align:center;
+  color:#536a81;
   background:#010308;
-  color:#53647a;
-  border-top:1px solid rgba(255,255,255,.06);
+  border-top:1px solid rgba(255,255,255,.05);
 }
 
-/* =========================
-   MOBILE
-========================= */
-
+/* MOBILE */
 @media(max-width:900px){
-
-  nav{
-    padding:15px 4%;
+  .navright a:not(.btn){display:none}
+  .stage{inset:200px 0 125px}
+  .world{min-height:1050px}
+  .coreWrap{
+    top:29%;
+    transform:translate(-50%,-50%) scale(.7);
   }
-
-  .links{
-    display:none;
-  }
-
-  .logo{
-    font-size:15px;
-  }
-
-  .demo{
-    font-size:11px;
-    padding:9px 12px;
-  }
-
-  .hero{
-    min-height:1100px;
-    align-items:flex-start;
-  }
-
-  .hero-title{
-    top:9%;
-  }
-
-  .core-area{
-    top:34%;
-    transform:translate(-50%,-50%) scale(.75);
-  }
-
-  .station{
+  .robotStation{
     width:43%;
-    padding:11px;
+    min-height:125px;
+    padding:9px;
   }
-
-  .station .robot{
-    transform:scale(.78);
-    height:90px;
-  }
-
-  .station h3{
-    font-size:12px;
-  }
-
-  .station p{
-    font-size:9px;
-  }
-
-  .s1{left:4%;top:48%}
-  .s2{right:4%;top:48%}
-
-  .s3{left:4%;top:66%}
-  .s4{right:4%;top:66%}
-
-  .s5{left:4%;bottom:10%}
-  .s6{right:4%;bottom:10%}
-
-  .live-panel{
-    display:none;
-  }
-
-  .line{
-    display:none;
-  }
-
-  .cards{
-    grid-template-columns:1fr;
-  }
-
-  .ticker{
-    bottom:0;
-  }
+  .robot{transform:scale(.8);height:66px}
+  .robotStation h4{font-size:9px}
+  .rs1{left:4%;top:48%}
+  .rs2{right:4%;top:48%}
+  .rs3{left:4%;top:67%}
+  .rs4{right:4%;top:67%}
+  .rs5,.rs6{display:none}
+  .beam{display:none}
+  .focusPanel{bottom:93px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .businessCard{min-height:120px}
+}
+@media(max-width:500px){
+  nav{height:62px;padding:0 4%}
+  .brand{font-size:13px}
+  .btn{font-size:10px;padding:9px 11px}
+  .heroCopy{top:76px}
+  .heroCopy p{font-size:12px}
+  .grid{grid-template-columns:1fr 1fr}
+  .detailBox{padding:28px 16px}
 }
 </style>
 </head>
@@ -762,320 +643,291 @@ footer{
 <body>
 
 <nav>
-  <div class="logo">NEXORA <span>ONECORE AI</span></div>
-
-  <div class="links">
-    <a href="#workforce">AI Workforce</a>
-    <a href="#activity">Live System</a>
-    <a href="#contact">Contact</a>
+  <div class="brand">NEXORA <b>ONECORE AI</b></div>
+  <div class="navright">
+    <a href="#businesses">50 Businesses</a>
+    <a href="#system">AI Workforce</a>
+    <a href="#contact" class="btn">Explore Nexora →</a>
   </div>
-
-  <a href="#contact" class="demo">Request Demo →</a>
 </nav>
 
-<section class="hero">
+<section class="world" id="system">
+  <div class="stars" id="stars"></div>
 
-  <div class="floor"></div>
-
-  <div class="particles" id="particles"></div>
-
-  <div class="hero-title">
-    <div class="badge">AUTONOMOUS AI BUSINESS EXECUTION</div>
-
-    <h1>
-      One Intelligence.
-      <span>Many Businesses.</span>
-    </h1>
-
-    <p>
-      A connected AI workforce designed around real business workflows.
-    </p>
+  <div class="heroCopy">
+    <div class="pill">NEXORA AI BUSINESS FACTORY • INTERACTIVE CONCEPT</div>
+    <h1>One Intelligence.<br><span>50 AI Businesses.</span></h1>
+    <p>Explore a connected AI workforce designed around sales, operations, logistics, facilities, healthcare, commerce and more.</p>
   </div>
 
-  <!-- DATA CONNECTIONS -->
+  <div class="stage" id="stage">
+    <div class="scene" id="scene">
+      <div class="floor"></div>
 
-  <div class="line l1"></div>
-  <div class="line l2"></div>
-  <div class="line l3"></div>
-  <div class="line l4"></div>
+      <div class="beam b1"></div>
+      <div class="beam b2"></div>
+      <div class="beam b3"></div>
+      <div class="beam b4"></div>
 
-  <!-- NEXORA CORE -->
-
-  <div class="core-area">
-
-    <div class="orbit orbit1"></div>
-    <div class="orbit orbit2"></div>
-    <div class="orbit orbit3"></div>
-
-    <div class="core-globe">
-      <strong>NEXORA</strong>
-      <span>ONECORE AI</span>
-    </div>
-
-  </div>
-
-  <!-- PROSPECTING -->
-
-  <div class="station s1">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="coreWrap">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="globe">
+          <strong>NEXORA</strong>
+          <span>ONECORE AI</span>
         </div>
       </div>
-      <div class="body"></div>
-    </div>
 
-    <h3>🔎 PROSPECTING AGENT</h3>
-
-    <p>
-      Researching public companies and identifying relevant business opportunities.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
-  </div>
-
-  <!-- SALES -->
-
-  <div class="station s2">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="robotStation rs1">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
         </div>
+        <h4>PROSPECTING UNIT</h4>
+        <div class="screen"></div>
       </div>
-      <div class="body"></div>
-    </div>
 
-    <h3>📈 SALES AGENT</h3>
-
-    <p>
-      Supporting qualification, demos, follow-ups and sales execution.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
-  </div>
-
-  <!-- MARKETING -->
-
-  <div class="station s3">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="robotStation rs2">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
         </div>
+        <h4>REVENUE UNIT</h4>
+        <div class="screen"></div>
       </div>
-      <div class="body"></div>
-    </div>
 
-    <h3>📣 MARKETING AGENT</h3>
-
-    <p>
-      Creating content concepts and supporting campaign workflows.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
-  </div>
-
-  <!-- LOGISTICS -->
-
-  <div class="station s4">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="robotStation rs3">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
         </div>
+        <h4>OPERATIONS UNIT</h4>
+        <div class="screen"></div>
       </div>
-      <div class="body"></div>
-    </div>
 
-    <h3>🚚 LOGISTICS AGENT</h3>
-
-    <p>
-      Processing quote intake, dispatch workflows and operational exceptions.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
-  </div>
-
-  <!-- FACILITIES -->
-
-  <div class="station s5">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="robotStation rs4">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
         </div>
+        <h4>ANALYTICS UNIT</h4>
+        <div class="screen"></div>
       </div>
-      <div class="body"></div>
-    </div>
 
-    <h3>🏢 FACILITIES AGENT</h3>
-
-    <p>
-      Supporting maintenance triage, technician coordination and operations.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
-  </div>
-
-  <!-- SUPPORT -->
-
-  <div class="station s6">
-
-    <div class="robot">
-      <div class="head">
-        <div class="face">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
+      <div class="robotStation rs5">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
         </div>
+        <h4>SUPPORT UNIT</h4>
+        <div class="screen"></div>
       </div>
-      <div class="body"></div>
+
+      <div class="robotStation rs6">
+        <div class="robot">
+          <div class="robotHead"><div class="robotFace"></div></div>
+          <div class="robotBody"></div>
+        </div>
+        <h4>AUTOMATION UNIT</h4>
+        <div class="screen"></div>
+      </div>
     </div>
-
-    <h3>🎧 SUPPORT AGENT</h3>
-
-    <p>
-      Classifying customer requests and routing cases for appropriate action.
-    </p>
-
-    <div class="task">● WORKFLOW ACTIVE</div>
-
   </div>
 
-  <!-- LIVE PANEL -->
-
-  <div class="live-panel">
-
-    <h4>● ONECORE SYSTEM</h4>
-
-    <div class="live-row">
-      <span>AI Workflows</span>
-      <span>ACTIVE</span>
-    </div>
-
-    <div class="live-row">
-      <span>Business Models</span>
-      <span>50+</span>
-    </div>
-
-    <div class="live-row">
-      <span>Workflow Types</span>
-      <span>30+</span>
-    </div>
-
-    <div class="live-row">
-      <span>Architecture</span>
-      <span>MULTI-AGENT</span>
-    </div>
-
+  <div class="focusPanel">
+    <div class="focusTop"><i class="dot"></i> AI BUSINESS FOCUS</div>
+    <h2 id="focusName">01 — AI Revenue Workforce</h2>
+    <p id="focusTask">Supporting prospecting, qualification, follow-up and revenue workflows.</p>
   </div>
 
-  <!-- BUSINESS TICKER -->
-
-  <div class="ticker">
-
-    <div class="track">
-
-      <div class="business"><span>01</span> Revenue AI</div>
-      <div class="business"><span>02</span> Facilities AI</div>
-      <div class="business"><span>03</span> Logistics AI</div>
-      <div class="business"><span>04</span> E-commerce AI</div>
-      <div class="business"><span>05</span> Hotel Operations</div>
-      <div class="business"><span>06</span> Clinic AI</div>
-      <div class="business"><span>07</span> Dental AI</div>
-      <div class="business"><span>08</span> Real Estate AI</div>
-      <div class="business"><span>09</span> Property AI</div>
-      <div class="business"><span>10</span> Construction AI</div>
-      <div class="business"><span>11</span> Manufacturing AI</div>
-      <div class="business"><span>12</span> Warehouse AI</div>
-      <div class="business"><span>13</span> Fleet AI</div>
-      <div class="business"><span>14</span> Delivery AI</div>
-      <div class="business"><span>15</span> Healthcare AI</div>
-      <div class="business"><span>16</span> Recruitment AI</div>
-      <div class="business"><span>17</span> Marketing AI</div>
-      <div class="business"><span>18</span> Customer Support AI</div>
-
-      <!-- duplicate -->
-
-      <div class="business"><span>01</span> Revenue AI</div>
-      <div class="business"><span>02</span> Facilities AI</div>
-      <div class="business"><span>03</span> Logistics AI</div>
-      <div class="business"><span>04</span> E-commerce AI</div>
-      <div class="business"><span>05</span> Hotel Operations</div>
-      <div class="business"><span>06</span> Clinic AI</div>
-      <div class="business"><span>07</span> Dental AI</div>
-      <div class="business"><span>08</span> Real Estate AI</div>
-      <div class="business"><span>09</span> Property AI</div>
-      <div class="business"><span>10</span> Construction AI</div>
-      <div class="business"><span>11</span> Manufacturing AI</div>
-      <div class="business"><span>12</span> Warehouse AI</div>
-      <div class="business"><span>13</span> Fleet AI</div>
-      <div class="business"><span>14</span> Delivery AI</div>
-      <div class="business"><span>15</span> Healthcare AI</div>
-      <div class="business"><span>16</span> Recruitment AI</div>
-      <div class="business"><span>17</span> Marketing AI</div>
-      <div class="business"><span>18</span> Customer Support AI</div>
-
-    </div>
-
+  <div class="businessDock">
+    <div class="businessTrack" id="businessTrack"></div>
   </div>
-
 </section>
 
-<!-- WORKFORCE -->
-
-<section class="workforce" id="workforce">
-
-  <div class="section-title">
-
+<section class="explorer" id="businesses">
+  <div class="heading">
     <small>NEXORA BUSINESS FACTORY</small>
-
-    <h2>
-      AI Workforce Across Business Operations
-    </h2>
-
-    <p>
-      Purpose-built AI workflows for different operational roles,
-      with authorized human oversight where required.
-    </p>
-
+    <h2>50 Specialized AI Businesses</h2>
+    <p>Select any business to explore its workflow concept. Each business can be tailored around an organization's approved systems, processes and requirements.</p>
   </div>
+  <div class="grid" id="grid"></div>
+</section>
 
-  <div class="cards">
+<section class="detail">
+  <div class="detailBox">
+    <small>SELECTED AI WORKFORCE</small>
+    <div id="detailName">AI Revenue Workforce</div>
+    <p id="detailTask">Supporting prospecting, qualification, follow-up and revenue workflows.</p>
 
-    <div class="card">
-      <div class="card-icon">🔎</div>
-      <h3>Prospecting AI</h3>
-      <p>
-        Public business research, opportunity identification and prospect intelligence.
-      </p>
-      <div class="active">● AI WORKFLOW</div>
+    <div class="flow">
+      <span>Business Input</span>
+      <b class="arrow">→</b>
+      <span>AI Analysis</span>
+      <b class="arrow">→</b>
+      <span>Workflow Action</span>
+      <b class="arrow">→</b>
+      <span>Human Approval</span>
+      <b class="arrow">→</b>
+      <span>Outcome</span>
     </div>
+  </div>
+</section>
 
-    <div class="card">
-      <div class="card-icon">📈</div>
-      <h3>Revenue AI</h3>
-      <p>
-        Lead qualification, follow-up workflows, demonstrations and sales operations.
-      </p>
-      <div class="active">● AI WORKFLOW</div>
-    </div>
+<section class="cta" id="contact">
+  <h2>OneCore.<br><span>Many Business Workflows.</span></h2>
+  <p>Start with one focused workflow. Nexora OneCore AI can design a tailored AI automation concept around the operational requirement.</p>
+  <a class="ctaBtn" href="#businesses">Explore All 50 Businesses</a>
+</section>
 
-    <div class="card">
-      <div class="card-ico
+<footer>© 2026 Nexora OneCore AI • Interactive Business Factory Concept</footer>
+
+<script>
+const businesses = [
+["AI Revenue Workforce","Supporting prospecting, qualification, follow-up and revenue workflows."],
+["Facilities Management AI","Supporting maintenance intake, triage, technician coordination and facilities workflows."],
+["Logistics Quote Agent","Organizing freight enquiries, missing information, service classification and quote-team handoff."],
+["E-commerce Operations AI","Supporting product, order, inventory and customer operations."],
+["Hotel Operations AI","Supporting guest requests, housekeeping coordination and hotel operations."],
+["Clinic Operations AI","Supporting approved appointment, enquiry and administrative clinic workflows."],
+["Dental Practice AI","Supporting scheduling, patient enquiries and dental practice administration."],
+["Real Estate Sales AI","Supporting property enquiries, lead qualification and sales follow-up."],
+["Property Management AI","Supporting tenant requests, maintenance coordination and property workflows."],
+["Construction Project AI","Supporting project information, task coordination and construction operations."],
+["Manufacturing Operations AI","Supporting production information, operational exceptions and workflow coordination."],
+["Warehouse Operations AI","Supporting inventory movement, task coordination and warehouse workflows."],
+["Fleet Operations AI","Supporting vehicle operations, scheduling and fleet workflow coordination."],
+["Last-Mile Delivery AI","Supporting dispatch, delivery exceptions and customer communication workflows."],
+["Hospitality Food Operations AI","Supporting orders, service workflows and hospitality food operations."],
+["Home Services Marketplace AI","Supporting service requests, provider matching and booking workflows."],
+["Emergency Services Coordination AI","Supporting authorized request classification and operational coordination workflows."],
+["Automotive Service AI","Supporting service enquiries, bookings and workshop workflow coordination."],
+["Towing & Roadside AI","Supporting roadside requests, location intake and dispatch coordination."],
+["Insurance Operations AI","Supporting document intake, request classification and insurance operations."],
+["Accounting Workflow AI","Supporting approved document, reconciliation and accounting workflow preparation."],
+["Legal Operations AI","Supporting authorized document organization, extraction and legal operations."],
+["HR Operations AI","Supporting employee requests, HR information and administrative workflows."],
+["Recruitment AI","Supporting candidate intake, screening workflows and recruitment coordination."],
+["Employee Onboarding AI","Supporting onboarding checklists, information collection and task coordination."],
+["Customer Support AI","Classifying customer requests and routing cases for appropriate action."],
+["Contact Center AI","Supporting enquiry classification, summaries and contact-center workflows."],
+["Appointment Booking AI","Supporting availability workflows, booking requests and reminders."],
+["Education Revision AI","Supporting structured revision, learning activities and educational workflows."],
+["School Administration AI","Supporting school enquiries, administrative tasks and information workflows."],
+["Training & L&D AI","Supporting training content, learning workflows and development operations."],
+["Healthcare Back-Office AI","Supporting approved non-clinical administrative healthcare workflows."],
+["Pharmacy Operations AI","Supporting approved inventory, request and administrative pharmacy workflows."],
+["Retail Store Operations AI","Supporting store tasks, inventory information and retail operations."],
+["Supermarket Operations AI","Supporting product, stock and supermarket operational workflows."],
+["Procurement AI","Supporting purchase requests, information comparison and procurement workflows."],
+["Supplier Management AI","Supporting supplier information, communication and coordination workflows."],
+["Field Service AI","Supporting work orders, technician coordination and field-service workflows."],
+["Energy & Utilities Operations AI","Supporting approved operational requests and utility workflow coordination."],
+["Solar Operations AI","Supporting project, maintenance and solar operations workflows."],
+["Telecom Field Operations AI","Supporting field requests, work orders and telecom operational coordination."],
+["IT Service Management AI","Supporting ticket classification, knowledge retrieval and IT service workflows."],
+["Cybersecurity Operations Assistant","Supporting authorized defensive security triage, documentation and workflow coordination."],
+["Compliance Operations AI","Supporting approved document checks, evidence organization and compliance workflows."],
+["Document Processing AI","Extracting, organizing and routing approved business documents."],
+["Knowledge Management AI","Organizing approved company knowledge and supporting information retrieval."],
+["Marketing Operations AI","Supporting content, campaign planning, creative workflows and reporting."],
+["Social Media Operations AI","Supporting content planning, publishing workflows and engagement operations."],
+["Travel Operations AI","Supporting travel enquiries, itinerary information and operational workflows."],
+["Event Operations AI","Supporting attendee, scheduling, vendor and event coordination workflows."]
+];
+
+const track = document.getElementById("businessTrack");
+const grid = document.getElementById("grid");
+
+function addTrack(){
+  [...businesses,...businesses].forEach((b,i)=>{
+    const item=document.createElement("div");
+    item.className="biz";
+    item.dataset.index=i%50;
+    item.innerHTML=`<b>${String((i%50)+1).padStart(2,"0")}</b>${b[0]}`;
+    track.appendChild(item);
+  });
+}
+
+function selectBusiness(i){
+  const b=businesses[i];
+  document.getElementById("focusName").textContent=
+    `${String(i+1).padStart(2,"0")} — ${b[0]}`;
+  document.getElementById("focusTask").textContent=b[1];
+  document.getElementById("detailName").textContent=b[0];
+  document.getElementById("detailTask").textContent=b[1];
+
+  document.querySelectorAll(".biz").forEach(x=>{
+    x.classList.toggle("active",Number(x.dataset.index)===i);
+  });
+}
+
+function addGrid(){
+  businesses.forEach((b,i)=>{
+    const card=document.createElement("div");
+    card.className="businessCard";
+    card.innerHTML=`
+      <div class="num">BUSINESS ${String(i+1).padStart(2,"0")}</div>
+      <h3>${b[0]}</h3>
+      <div class="status">● AI WORKFLOW CONCEPT</div>
+    `;
+    card.onclick=()=>{
+      selectBusiness(i);
+      document.querySelector(".detail").scrollIntoView({behavior:"smooth"});
+    };
+    grid.appendChild(card);
+  });
+}
+
+addTrack();
+addGrid();
+selectBusiness(0);
+
+/* AUTO ROTATE ALL 50 */
+let current=0;
+setInterval(()=>{
+  current=(current+1)%businesses.length;
+  selectBusiness(current);
+},3500);
+
+/* PARTICLES */
+const stars=document.getElementById("stars");
+for(let i=0;i<60;i++){
+  const s=document.createElement("i");
+  s.className="star";
+  s.style.left=Math.random()*100+"%";
+  s.style.animationDuration=(6+Math.random()*12)+"s";
+  s.style.animationDelay=(-Math.random()*12)+"s";
+  s.style.opacity=Math.random();
+  stars.appendChild(s);
+}
+
+/* DESKTOP PARALLAX */
+const scene=document.getElementById("scene");
+window.addEventListener("mousemove",(e)=>{
+  if(innerWidth<900)return;
+  const x=(e.clientX/innerWidth-.5)*10;
+  const y=(e.clientY/innerHeight-.5)*7;
+  scene.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+
+/* MOBILE SWIPE TO CHANGE BUSINESS */
+let touchStart=0;
+window.addEventListener("touchstart",e=>{
+  touchStart=e.changedTouches[0].clientX;
+},{passive:true});
+
+window.addEventListener("touchend",e=>{
+  const diff=e.changedTouches[0].clientX-touchStart;
+  if(Math.abs(diff)>55){
+    current = diff<0
+      ? (current+1)%businesses.length
+      : (current-1+businesses.length)%businesses.length;
+    selectBusiness(current);
+  }
+},{passive:true});
+</script>
+
+</body>
+</html>
