@@ -1,0 +1,1 @@
+- [Drizzle push failures](drizzle-push-quirks.md) — a failed schema push may leave empty tables behind; inspect the live schema before retrying.

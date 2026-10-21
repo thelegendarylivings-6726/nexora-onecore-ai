@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@layer theme, base, clerk, components, utilities;
+@import 'tailwindcss';
+@import '@clerk/themes/shadcn.css';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 40 30% 97%;
+  --foreground: 213 35% 16%;
+  --border: 210 20% 87%;
+  --input: 210 20% 87%;
+  --card: 0 0% 100%;
+  --card-foreground: 213 35% 16%;
+  --primary: 164 55% 27%;
+  --primary-foreground: 45 35% 97%;
+  --secondary: 39 33% 92%;
+  --secondary-foreground: 213 35% 20%;
+  --muted: 39 25% 93%;
+  --muted-foreground: 211 13% 47%;
+  --accent: 38 82% 58%;
+  --accent-foreground: 213 35% 16%;
+  --destructive: 2 63% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --popover: 40 30% 98%;
+  --popover-foreground: 213 35% 16%;
+  --ring: 164 55% 27%;
+  --sidebar: 213 34% 15%;
+  --sidebar-foreground: 40 30% 94%;
+  --app-font-sans: 'Manrope', sans-serif;
+  --app-font-mono: 'DM Mono', monospace;
+  --radius: 0.7rem;
+  --chart-1: 164 55% 27%;
+  --chart-2: 38 82% 58%;
+  --chart-3: 212 35% 44%;
+  --chart-4: 7 52% 59%;
+  --chart-5: 146 24% 54%;
+}
+
+.dark {
+  --background: 213 34% 12%;
+  --foreground: 40 30% 94%;
+  --border: 213 20% 25%;
+  --input: 213 20% 25%;
+  --card: 213 30% 16%;
+  --card-foreground: 40 30% 94%;
+  --primary: 158 49% 53%;
+  --primary-foreground: 213 34% 12%;
+  --secondary: 213 24% 22%;
+  --secondary-foreground: 40 30% 94%;
+  --muted: 213 24% 22%;
+  --muted-foreground: 210 15% 68%;
+  --accent: 38 82% 58%;
+  --accent-foreground: 213 34% 12%;
+  --destructive: 2 63% 57%;
+  --destructive-foreground: 0 0% 100%;
+  --popover: 213 30% 16%;
+  --popover-foreground: 40 30% 94%;
+  --ring: 158 49% 53%;
+  --sidebar: 213 38% 9%;
+  --sidebar-foreground: 40 30% 94%;
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-background text-foreground antialiased; font-family: var(--app-font-sans); }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  ::selection { background: hsl(var(--accent) / .35); }
+}
+
+.mono { font-family: var(--app-font-mono); }
+.display { font-family: 'Space Grotesk', sans-serif; }
+.grain::after {
+  content: ''; pointer-events: none; position: fixed; inset: 0; z-index: 50; opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.34'/%3E%3C/svg%3E");
+}
+.enter { animation: enter .5s cubic-bezier(.2,.75,.25,1) both; }
+.enter-delay { animation: enter .65s cubic-bezier(.2,.75,.25,1) .1s both; }
+@keyframes enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.cl-formFieldInput::placeholder { color: #76828b; opacity: 1; }

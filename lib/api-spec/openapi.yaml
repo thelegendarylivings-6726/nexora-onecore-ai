@@ -10,6 +10,16 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: businesses
+    description: Business catalog and activation
+  - name: workspace
+    description: Organization workspace
+  - name: dashboard
+    description: OneCore dashboard
+  - name: commands
+    description: OneCore AI commands
+  - name: deployments
+    description: Deployment requests
 paths:
   /healthz:
     get:
@@ -24,6 +34,160 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /businesses:
+    get:
+      operationId: listBusinesses
+      tags: [businesses]
+      summary: List the 50 business modules
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: industry
+          in: query
+          schema:
+            type: string
+        - name: function
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Business catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Business"
+  /workspace:
+    get:
+      operationId: getWorkspace
+      tags: [workspace]
+      summary: Get the signed-in user's organization workspace
+      responses:
+        "200":
+          description: Workspace
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+        "401":
+          description: Sign-in required
+  /workspace/businesses/{slug}:
+    put:
+      operationId: activateBusiness
+      tags: [workspace]
+      summary: Enable a business module for the user's organization
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated workspace
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+        "401":
+          description: Sign-in required
+        "404":
+          description: Business not found
+    delete:
+      operationId: deactivateBusiness
+      tags: [workspace]
+      summary: Disable a business module for the user's organization
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated workspace
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Workspace"
+        "401":
+          description: Sign-in required
+        "404":
+          description: Business not found
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get organization-scoped OneCore metrics
+      responses:
+        "200":
+          description: Current persisted workspace metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+        "401":
+          description: Sign-in required
+  /dashboard/activity:
+    get:
+      operationId: getDashboardActivity
+      tags: [dashboard]
+      summary: Get recent organization activity
+      responses:
+        "200":
+          description: Recent activity from persisted records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+        "401":
+          description: Sign-in required
+  /commands:
+    post:
+      operationId: submitCommand
+      tags: [commands]
+      summary: Submit a OneCore command
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommandInput"
+      responses:
+        "200":
+          description: Command status; unavailable until AI is connected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommandStatus"
+        "401":
+          description: Sign-in required
+  /deployment-requests:
+    post:
+      operationId: createDeploymentRequest
+      tags: [deployments]
+      summary: Request deployment support for a business module
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeploymentRequestInput"
+      responses:
+        "201":
+          description: Request recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeploymentRequest"
+        "401":
+          description: Sign-in required
 components:
   schemas:
     HealthStatus:
@@ -33,4 +197,139 @@ components:
           type: string
       required:
         - status
+    Business:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        industry:
+          type: string
+        function:
+          type: string
+        capabilities:
+          type: array
+          items:
+            type: string
+        workflow:
+          type: string
+        phase:
+          type: string
+          enum: [catalog, flagship]
+      required:
+        - slug
+        - name
+        - description
+        - industry
+        - function
+        - capabilities
+        - workflow
+        - phase
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [owner, admin, user]
+        enabledBusinesses:
+          type: array
+          items:
+            type: string
+      required: [id, name, role, enabledBusinesses]
+    DashboardSummary:
+      type: object
+      properties:
+        activeAgents:
+          type: integer
+        businessesEnabled:
+          type: integer
+        tasksRunning:
+          type: integer
+        tasksCompleted:
+          type: integer
+        leads:
+          type: integer
+        customers:
+          type: integer
+        appointments:
+          type: integer
+        supportRequests:
+          type: integer
+        automations:
+          type: integer
+        approvalsRequired:
+          type: integer
+      required:
+        - activeAgents
+        - businessesEnabled
+        - tasksRunning
+        - tasksCompleted
+        - leads
+        - customers
+        - appointments
+        - supportRequests
+        - automations
+        - approvalsRequired
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        detail:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, type, title, detail, createdAt]
+    CommandInput:
+      type: object
+      properties:
+        prompt:
+          type: string
+          minLength: 1
+          maxLength: 4000
+      required: [prompt]
+    CommandStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [unavailable]
+        message:
+          type: string
+      required: [status, message]
+    DeploymentRequestInput:
+      type: object
+      properties:
+        businessSlug:
+          type: string
+        message:
+          type: string
+          maxLength: 2000
+      required: [businessSlug]
+    DeploymentRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        businessSlug:
+          type: string
+        status:
+          type: string
+          enum: [submitted]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, businessSlug, status, createdAt]
 

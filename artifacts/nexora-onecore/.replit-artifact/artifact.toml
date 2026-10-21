@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Nexora OneCore AI"
+description = "A unified enterprise AI workspace with a searchable marketplace of 50 specialized business modules, a central command center, and secure organization-aware workflows."
+version = "1.0.0"
+id = "artifacts/nexora-onecore"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18293
+
+[services.development]
+run = "pnpm --filter @workspace/nexora-onecore run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/nexora-onecore", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/nexora-onecore/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18293"
+BASE_PATH = "/"
