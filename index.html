@@ -945,7 +945,7 @@ grid.addEventListener("touchend",e=>{
 },{passive:true});
 
 
-function routeOneCoreTask(){
+async function routeOneCoreTask(){
  const input=document.getElementById("onecoreTask");
  const out=document.getElementById("onecoreResult");
  const task=(input?.value||"").trim();
@@ -961,7 +961,14 @@ function routeOneCoreTask(){
  else if(/knowledge|policy|manual|search|internal/.test(t)){capability="Knowledge & RAG";module="Knowledge Management AI";}
  else if(/automate|schedule|route|trigger|workflow/.test(t)){capability="Automation Engine";module="IT Service Management AI";}
  const sensitive=/pay|payment|bank|contract|legal|medical|delete|purchase|spend|publish/.test(t);
- out.innerHTML="<b style='color:#68eaff'>Capability:</b> "+capability+"<br><b style='color:#68eaff'>Business module:</b> "+module+"<br><b style='color:#68eaff'>Control:</b> "+(sensitive?"Human approval required before external action":"Standard verification path")+"<br><b style='color:#68eaff'>Execution:</b> Routing is active; external AI/API execution requires backend credentials.";
+ out.innerHTML="<b style='color:#68eaff'>Capability:</b> "+capability+"<br><b style='color:#68eaff'>Business module:</b> "+module+"<br><b style='color:#68eaff'>Control:</b> "+(sensitive?"Human approval required before external action":"Standard verification path")+"<br>Running OneCore AI…";
+ try{
+  const response=await fetch("/api/onecore",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task,capability,module,sensitive})});
+  const data=await response.json();
+  if(!response.ok) throw new Error(data.error||"AI backend unavailable");
+  const safe=String(data.output||"No output returned.").replace(/[&<>]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[ch]));
+  out.innerHTML="<b style='color:#68eaff'>Capability:</b> "+capability+"<br><b style='color:#68eaff'>Business module:</b> "+module+"<br><b style='color:#68eaff'>Control:</b> "+(sensitive?"Human approval required before external action":"Standard verification path")+"<hr style='border-color:rgba(82,219,255,.15);margin:12px 0'><b style='color:#68ffb0'>ONECORE RESPONSE</b><div style='white-space:pre-wrap;margin-top:8px'>"+safe+"</div>";
+ }catch(err){out.innerHTML="<b style='color:#ffcf68'>AI backend:</b> "+String(err.message||err);}
 }
 
 buildBusinesses();
