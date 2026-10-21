@@ -700,6 +700,26 @@ footer{
 </div>
 </section>
 
+<section class="section" id="ai-console">
+<div class="sectionTitle">
+  <small>ONECORE AI ROUTER</small>
+  <h2>Route a Business Task to the Right AI Capability</h2>
+  <p>This working front-end router maps a task to Nexora's capability and business workflow layers. External model/API execution remains disabled until an approved backend provider and credentials are configured.</p>
+</div>
+<div class="detail">
+ <div>
+  <small style="color:#57e1ff;letter-spacing:3px">TASK INPUT</small>
+  <h3 style="margin-top:10px">What should OneCore handle?</h3>
+  <textarea id="onecoreTask" placeholder="Example: Qualify this sales enquiry, summarize the attached requirements and prepare a follow-up." style="width:100%;min-height:130px;margin:12px 0;padding:15px;border-radius:12px;border:1px solid rgba(82,219,255,.3);background:#031225;color:#fff;resize:vertical"></textarea>
+  <button class="primary" onclick="routeOneCoreTask()">ROUTE TASK →</button>
+ </div>
+ <div>
+  <small style="color:#57e1ff;letter-spacing:3px">ROUTING RESULT</small>
+  <div id="onecoreResult" style="margin-top:12px;padding:18px;border:1px solid rgba(82,219,255,.2);border-radius:12px;background:#041326;color:#9fb8cf;line-height:1.7">Enter a task to see the recommended capability, business module and approval path.</div>
+ </div>
+</div>
+</section>
+
 <section class="section" id="marketing">
  <div class="sectionTitle">
   <small>NEXORA AI MARKETING EXECUTION PLATFORM</small>
@@ -924,6 +944,25 @@ grid.addEventListener("touchend",e=>{
  if(Math.abs(diff)>50) slideBusinesses(diff>0?1:-1);
 },{passive:true});
 
+
+function routeOneCoreTask(){
+ const input=document.getElementById("onecoreTask");
+ const out=document.getElementById("onecoreResult");
+ const task=(input?.value||"").trim();
+ if(!task){out.textContent="Enter a business task first.";return;}
+ const t=task.toLowerCase();
+ let capability="Generative & LLM AI", module="Knowledge Management AI";
+ if(/sale|lead|prospect|quote|follow.?up/.test(t)){capability="Multi-Agent Orchestration";module="AI Revenue Workforce";}
+ else if(/voice|call|phone/.test(t)){capability="Voice AI";module="Contact Center AI";}
+ else if(/document|invoice|pdf|form|extract/.test(t)){capability="Document AI";module="Document Processing AI";}
+ else if(/image|photo|video|media/.test(t)){capability="Multimodal AI";module="Marketing Operations AI";}
+ else if(/support|customer|complaint|ticket/.test(t)){capability="Enterprise AI Agents";module="Customer Support AI";}
+ else if(/machine|factory|maintenance|facility|sensor/.test(t)){capability="Industrial / Physical AI";module="Manufacturing Operations AI";}
+ else if(/knowledge|policy|manual|search|internal/.test(t)){capability="Knowledge & RAG";module="Knowledge Management AI";}
+ else if(/automate|schedule|route|trigger|workflow/.test(t)){capability="Automation Engine";module="IT Service Management AI";}
+ const sensitive=/pay|payment|bank|contract|legal|medical|delete|purchase|spend|publish/.test(t);
+ out.innerHTML="<b style='color:#68eaff'>Capability:</b> "+capability+"<br><b style='color:#68eaff'>Business module:</b> "+module+"<br><b style='color:#68eaff'>Control:</b> "+(sensitive?"Human approval required before external action":"Standard verification path")+"<br><b style='color:#68eaff'>Execution:</b> Routing is active; external AI/API execution requires backend credentials.";
+}
 
 buildBusinesses();
 </script>
