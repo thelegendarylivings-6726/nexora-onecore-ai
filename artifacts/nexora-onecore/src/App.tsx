@@ -481,6 +481,49 @@ function RetryPanel({ title, text, onRetry }: { title: string; text: string; onR
   return <div className="rounded-lg border border-[#e6c7c2] bg-[#fff7f4] p-4"><div className="flex items-start gap-3"><CircleHelp className="mt-0.5 text-[#ae5148]" size={17} /><div className="flex-1"><p className="text-[12px] font-bold text-[#563d3b]">{title}</p><p className="mt-1 text-[11px] leading-5 text-[#776663]">{text}</p><button onClick={onRetry} className="mt-2 text-[11px] font-bold text-[#8e413a]" data-testid="button-retry">Retry</button></div></div></div>;
 }
 
+const flagshipWorkflowCopy: Record<string, { title: string; placeholder: string; prompt: string }> = {
+  'ai-sales': { title: 'Sales qualification workflow', placeholder: 'Example: New inbound lead from a 20-person HVAC company asking for 24/7 enquiry handling.', prompt: 'Act as the AI Sales Agent. Qualify this lead, identify missing information, draft the best next response, and propose follow-up actions. Use only the context below. Do not claim any message was sent or CRM was updated. Context: ' },
+  'ai-marketing': { title: 'Marketing campaign workflow', placeholder: 'Example: Local plumbing company wants more emergency-call leads with a $500 monthly ad budget.', prompt: 'Act as the AI Marketing Automation module. Build a concise campaign plan, audience, offer, channels, creative angles, measurement plan, and proposed next actions. Do not claim ads were launched or accounts changed. Context: ' },
+  'ai-customer-support': { title: 'Customer support workflow', placeholder: 'Example: Customer says the technician is 45 minutes late and wants an immediate update.', prompt: 'Act as the AI Customer Support Agent. Classify urgency and sentiment, draft a helpful response, list information to verify, and propose escalation actions. Do not claim a reply was sent or a ticket was changed. Context: ' },
+  'ai-real-estate': { title: 'Real-estate lead workflow', placeholder: 'Example: Buyer wants a 2-bedroom apartment under $400k, move-in within 60 days.', prompt: 'Act as the AI Real Estate Lead & Sales Agent. Qualify the lead, summarize requirements, identify missing questions, draft the next response, and propose follow-up actions. Do not provide legal/financial advice or claim outreach was sent. Context: ' },
+  'ai-logistics': { title: 'Logistics dispatch workflow', placeholder: 'Example: Same-day delivery is delayed; pickup is complete and customer ETA needs an update.', prompt: 'Act as the AI Logistics & Dispatch module. Triage this case, identify missing operational data, produce a dispatch/communication plan, and propose next actions. Do not claim routes, drivers, orders, or external systems were changed. Context: ' },
+};
+
+function FlagshipWorkflow({ business, isSignedIn }: { business: Business; isSignedIn: boolean | undefined }) {
+  const config = flagshipWorkflowCopy[business.slug];
+  const [context, setContext] = useState('');
+  const [result, setResult] = useState<CommandStatus | null>(null);
+  const [error, setError] = useState('');
+  const submit = useSubmitCommand();
+  const client = useQueryClient();
+  if (!config) return null;
+  function run(e: FormEvent) {
+    e.preventDefault();
+    if (!context.trim()) return;
+    setError('');
+    setResult(null);
+    submit.mutate({ data: { prompt: config.prompt + context.trim() } }, {
+      onSuccess: (response) => {
+        setResult(response);
+        void client.invalidateQueries({ queryKey: getGetDashboardSummaryQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetDashboardActivityQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetPendingCommandApprovalsQueryKey() });
+      },
+      onError: (failure) => {
+        const status = (failure as { status?: number }).status;
+        setError(status === 429 ? 'Command limit reached. Please wait before running another workflow.' : status === 502 ? 'OneCore AI could not prepare a reliable response. No action was executed.' : 'Workflow could not run. Please retry.');
+      },
+    });
+  }
+  return <section className="mt-4 rounded-xl border border-[#cbded0] bg-[#f4f8f2] p-5" data-testid="section-flagship-workflow">
+    <div className="flex items-start justify-between gap-3"><div><p className="mono text-[9px] uppercase tracking-[.14em] text-[#347356]">INTERACTIVE AI WORKFLOW</p><h2 className="display mt-1 text-xl font-semibold">{config.title}</h2><p className="mt-2 text-[11px] leading-5 text-[#64736b]">Runs through the authenticated OneCore AI command service. Enter real context or clearly labeled sample data. Generated actions are proposals only and require human review; no external action is executed here.</p></div><Sparkles size={18} className="text-[#347356]" /></div>
+    {!isSignedIn ? <Button href="/sign-in" className="mt-4">Sign in to run workflow <ArrowRight size={14} /></Button> :
+    <form onSubmit={run} className="mt-4"><textarea value={context} onChange={(e) => setContext(e.target.value)} maxLength={4000} rows={4} placeholder={config.placeholder} className="w-full resize-y rounded-lg border border-[#cbd8ce] bg-white p-3 text-[11px] outline-none focus:border-[#4f8b77]" data-testid="input-flagship-context" /><div className="mt-3 flex flex-wrap items-center gap-3"><button type="submit" disabled={!context.trim() || submit.isPending} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1f6a56] px-4 py-2.5 text-[12px] font-bold text-white disabled:opacity-50" data-testid="button-run-flagship">{submit.isPending ? 'Running…' : 'Run AI workflow'} <ArrowRight size={14} /></button><span className="text-[9px] text-[#78847e]">Nothing is sent, published, booked, dispatched, or changed automatically.</span></div></form>}
+    {error && <p role="status" className="mt-3 rounded-lg border border-[#e6c7c2] bg-[#fff7f4] px-3 py-2 text-[11px] font-semibold text-[#563d3b]">{error}</p>}
+    {result && <div role="status" className={`mt-3 rounded-lg border px-3 py-3 ${result.status === 'unavailable' ? 'border-[#eadfbe] bg-[#fcf7e9]' : 'border-[#cbded0] bg-white'}`}><p className="text-[11px] font-bold text-[#315c49]">{result.message}</p>{result.response && <p className="mt-2 whitespace-pre-wrap text-[11px] leading-5 text-[#40554a]">{result.response}</p>}{!!result.actions?.length && <div className="mt-3 space-y-2">{result.actions.map((action, index) => <div key={`${action.title}-${index}`} className="rounded-lg border border-[#d5e3d5] bg-[#f8faf6] px-3 py-2"><p className="text-[10px] font-bold text-[#304d40]">{action.title}</p><p className="mt-1 text-[10px] leading-4 text-[#66766b]">{action.description}</p></div>)}</div>} {!!result.actions?.length && <Button href="/dashboard" tone="outline" className="mt-3">Review proposals in Command Center <BadgeCheck size={14} /></Button>}</div>}
+  </section>;
+}
+
 function BusinessWorkspace() {
   const [, params] = useRoute('/business/:slug');
   const slug = params?.slug ?? '';
@@ -509,7 +552,7 @@ function requestDeployment(e: FormEvent) {
     e.preventDefault();
     if (!business) return;
     deployment.mutate({ data: { businessSlug: business.slug, message: requestMessage || undefined } }, {
-      onSuccess: (request) => { setNotice(`Deployment request ${request.id} was recorded in this workspace. Workflows remain unavailable until Phase 2.`); setRequestMessage(''); refreshWorkspace(); },
+      onSuccess: (request) => { setNotice(`Deployment request ${request.id} was recorded in this workspace.`); setRequestMessage(''); refreshWorkspace(); },
       onError: () => setNotice('Deployment request could not be submitted. Please retry.'),
     });
   }
@@ -522,7 +565,7 @@ function requestDeployment(e: FormEvent) {
           <Link href="/catalog#catalog" className="mono text-[9px] uppercase tracking-[.15em] text-[#728078] hover:text-[#1f6a56]">← BUSINESS CATALOG</Link>
           <div className="mt-5 rounded-2xl border border-[#dbe1d9] bg-[#fffefa] p-6 md:p-10">
             <div className="flex flex-col justify-between gap-6 md:flex-row">
-              <div className="max-w-[680px]"><div className="flex flex-wrap items-center gap-2"><span className="rounded-full bg-[#e9efe8] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#39715d]">{business.industry}</span><span className="rounded-full bg-[#f6ecd4] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#89682b]">{business.phase === 'flagship' ? 'Flagship · Phase 2' : 'Catalog module'}</span>{isEnabled && <span className="rounded-full bg-[#e1f0e3] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#347049]">Enabled</span>}</div>
+              <div className="max-w-[680px]"><div className="flex flex-wrap items-center gap-2"><span className="rounded-full bg-[#e9efe8] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#39715d]">{business.industry}</span><span className="rounded-full bg-[#f6ecd4] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#89682b]">{business.phase === 'flagship' ? 'Flagship · Interactive AI' : 'Catalog module'}</span>{isEnabled && <span className="rounded-full bg-[#e1f0e3] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.12em] text-[#347049]">Enabled</span>}</div>
                 <h1 className="display mt-5 text-4xl font-semibold tracking-[-.045em] md:text-6xl">{business.name}</h1><p className="mt-4 text-[15px] leading-7 text-[#5e6c73]">{business.description}</p>
                 <div className="mt-6 flex flex-wrap gap-2">{business.capabilities.map((capability) => <span key={capability} className="rounded-full border border-[#dce2da] bg-[#fafaf6] px-3 py-1.5 text-[10px] font-semibold text-[#52626a]">{capability}</span>)}</div>
               </div>
@@ -541,8 +584,9 @@ function requestDeployment(e: FormEvent) {
               <div className="rounded-xl border border-[#dce2da] bg-white p-5"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">WORKFLOW DEFINITION</p><h2 className="display mt-2 text-xl font-semibold">Catalog specification</h2><p className="mt-2 text-[12px] leading-5 text-[#68757a]">{business.workflow}</p></div>
             </div>
           </div>
+          {business.phase === 'flagship' && <FlagshipWorkflow business={business} isSignedIn={isSignedIn} />}
           <div className="mt-4 grid gap-4 md:grid-cols-[1fr_.85fr]">
-            <div className="rounded-xl border border-[#dfd3b4] bg-[#fbf6e8] p-5"><div className="flex items-start gap-3"><div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#f1e5c6] text-[#916f2f]"><CircleHelp size={17} /></div><div><p className="text-[12px] font-bold text-[#4d4534]">Operational workflows are not live</p><p className="mt-1 text-[11px] leading-5 text-[#786f5b]">{business.phase === 'flagship' ? 'Flagship demos and workflows are planned for Phase 2.' : 'This module is catalog-only today; operational workflows are not available.'} OneCore command drafts use a separate, review-gated workflow. This module does not execute actions.</p></div></div></div>
+            <div className="rounded-xl border border-[#dfd3b4] bg-[#fbf6e8] p-5"><div className="flex items-start gap-3"><div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#f1e5c6] text-[#916f2f]"><CircleHelp size={17} /></div><div><p className="text-[12px] font-bold text-[#4d4534]">{business.phase === 'flagship' ? 'AI workflow available' : 'Operational workflows are not live'}</p><p className="mt-1 text-[11px] leading-5 text-[#786f5b]">{business.phase === 'flagship' ? 'This flagship module can prepare AI analysis and proposed actions through OneCore. External execution is intentionally disabled until a reviewed integration is connected.' : 'This module is catalog-only today; operational workflows are not available.'}</p></div></div></div>
             {isSignedIn
               ? <form onSubmit={requestDeployment} className="rounded-xl border border-[#dce2da] bg-white p-5"><div className="flex items-center justify-between"><div><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">DEPLOYMENT SUPPORT</p><p className="mt-1 text-[12px] font-bold">Request deployment assistance</p></div><ExternalLink size={16} className="text-[#658072]" /></div><textarea value={requestMessage} onChange={(e) => setRequestMessage(e.target.value)} maxLength={2000} rows={2} placeholder="Optional context for your request" className="mt-3 w-full resize-y rounded-lg border border-[#dce2da] bg-[#fafaf7] p-3 text-[11px] outline-none focus:border-[#4f8b77]" data-testid="input-deployment-message" /><Button className="mt-3 w-full" disabled={deployment.isPending}>{deployment.isPending ? 'Submitting request…' : 'Submit request'} <ArrowRight size={14} /></Button><p className="mt-2 text-[9px] leading-4 text-[#88928a]">Request submission is recorded in this workspace; it does not activate a workflow. Pricing and billing are Phase 6.</p></form>
               : <div className="rounded-xl border border-[#dce2da] bg-white p-5"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">DEPLOYMENT SUPPORT</p><p className="mt-1 text-[12px] font-bold">Request deployment assistance</p><p className="mt-2 text-[10px] leading-4 text-[#718078]">Sign in to record a deployment request for your organization.</p><Button href="/sign-in" className="mt-4 w-full">Sign in to request help <ArrowRight size={14} /></Button></div>}
@@ -562,7 +606,7 @@ function Admin() {
     : <div className="enter"><p className="mono text-[9px] uppercase tracking-[.18em] text-[#a37b36]">ORGANIZATION CONTROL / 02</p><h1 className="display mt-2 text-4xl font-semibold tracking-[-.045em]">Organization settings</h1><p className="mt-2 text-[13px] text-[#68757a]">Workspace identity and module configuration at a glance.</p>
       <section className="mt-7 grid gap-4 md:grid-cols-[1.1fr_.9fr]">
         <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">WORKSPACE PROFILE</p><div className="mt-5 flex items-center gap-4"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e8eee7] text-[#286d57]"><Building2 size={21} /></div><div><h2 className="display text-xl font-semibold">{workspace.name}</h2><p className="mt-1 text-[11px] text-[#77837d]">Workspace ID <span className="mono">{workspace.id}</span></p></div></div><div className="mt-5 flex items-center justify-between border-t border-[#e8ebe5] pt-4"><span className="text-[11px] text-[#647078]">Your permission</span><span className="rounded-full bg-[#e8efe8] px-3 py-1 text-[10px] font-bold capitalize text-[#316e58]">{workspace.role}</span></div></div>
-        <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">CAPABILITY READINESS</p><div className="mt-4 space-y-3"><Readiness label="Browse business catalog" phase="LIVE" /><Readiness label="Flagship workflows & demos" phase="PHASE 2" /><Readiness label="OneCore AI command drafts" phase="REVIEW-GATED" /><Readiness label="Pricing & billing" phase="PHASE 6" /></div><p className="mt-4 text-[10px] leading-4 text-[#87918a]">Business modules remain catalog-only. OneCore drafts require a configured AI integration; proposed actions require owner or administrator review.</p></div>
+        <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">CAPABILITY READINESS</p><div className="mt-4 space-y-3"><Readiness label="Browse business catalog" phase="LIVE" /><Readiness label="Flagship interactive AI workflows" phase="LIVE" /><Readiness label="OneCore AI command drafts" phase="REVIEW-GATED" /><Readiness label="Pricing & billing" phase="PHASE 6" /></div><p className="mt-4 text-[10px] leading-4 text-[#87918a]">Five flagship modules provide interactive AI workflows. Other business modules remain catalog-only. OneCore requires a configured AI integration; proposed actions require owner or administrator review and do not execute external actions.</p></div>
       </section>
       <div className="mt-4 rounded-xl border border-[#dce2da] bg-white p-6"><div className="flex items-center justify-between"><div><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">ENABLED CONFIGURATION</p><h2 className="display mt-1 text-xl font-semibold">Business modules</h2></div><Link href="/catalog#catalog" className="text-[11px] font-bold text-[#286e59]">Browse modules <ArrowRight className="ml-1 inline" size={13} /></Link></div><p className="mt-3 text-[11px] text-[#718078]">{workspace.enabledBusinesses.length} modules enabled in this workspace. Manage module access from its catalog detail page.</p><div className="mt-4 flex flex-wrap gap-2">{workspace.enabledBusinesses.length ? workspace.enabledBusinesses.map((slug) => <Link href={`/business/${slug}`} key={slug} className="rounded-lg border border-[#dce3da] bg-[#f8faf6] px-3 py-2 text-[10px] font-semibold text-[#43554f]">{slug}<ArrowUpRight className="ml-1 inline" size={12} /></Link>) : <span className="rounded-lg border border-dashed border-[#d5ddd5] px-4 py-3 text-[11px] text-[#7b877f]">No enabled modules</span>}</div></div>
     </div>}
