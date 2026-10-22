@@ -112,7 +112,7 @@ function Header({ workspaceName }: { workspaceName?: string }) {
         <Link href="/catalog#solutions" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">Solutions</Link>
         <Link href="/catalog#workforce" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">AI Workforce</Link>
         <Link href="/dashboard" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">OneCore</Link>
-        <Link href="/catalog#platform" aria-label="Demo availability: Phase 2" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">Demo <span className="mono text-[8px] text-[#9a742d]">P2</span></Link>
+        <Link href="/catalog#platform" aria-label="Demo" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">Demo</Link>
         <Link href="/catalog#platform" aria-label="Pricing availability: Phase 6" className="text-[12px] font-semibold text-[#52636c] hover:text-[#1f6a56]">Pricing</Link>
       </nav>
       <div className="hidden items-center gap-3 md:flex">
@@ -130,7 +130,7 @@ function Header({ workspaceName }: { workspaceName?: string }) {
         <Link onClick={() => setMenuOpen(false)} href="/catalog#solutions" className="py-2 text-sm font-semibold">Solutions</Link>
         <Link onClick={() => setMenuOpen(false)} href="/catalog#workforce" className="py-2 text-sm font-semibold">AI Workforce</Link>
         <Link onClick={() => setMenuOpen(false)} href="/dashboard" className="py-2 text-sm font-semibold">OneCore</Link>
-        <Link onClick={() => setMenuOpen(false)} href="/catalog#platform" className="py-2 text-sm font-semibold">Demo · Phase 2</Link>
+        <Link onClick={() => setMenuOpen(false)} href="/catalog#platform" className="py-2 text-sm font-semibold">Demo</Link>
         <Link onClick={() => setMenuOpen(false)} href="/catalog#platform" className="py-2 text-sm font-semibold">Pricing</Link>
         {isSignedIn ? <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="py-2 text-sm font-semibold">Command center</Link> : <><Link href="/sign-in" className="py-2 text-sm font-semibold">Sign in</Link><Button href="/sign-up">Create workspace <ArrowRight size={14} /></Button></>}
       </div>
@@ -201,7 +201,7 @@ function Home() {
           <div className="mono mb-6 inline-flex items-center gap-2 rounded-full border border-[#d5dfd7] bg-white/65 px-3 py-1.5 text-[10px] uppercase tracking-[.14em] text-[#356f5e]"><span className="h-1.5 w-1.5 rounded-full bg-[#d89b35]" /> NEXORA ONECORE AI</div>
           <h1 className="display max-w-[720px] text-[clamp(3.2rem,7.6vw,6.65rem)] font-semibold leading-[.94] tracking-[-.065em] text-[#172934]">50 AI Businesses.<br /><span className="text-[#24715b]">One Intelligent</span><br />Platform.</h1>
           <p className="mt-7 max-w-[560px] text-[16px] leading-7 text-[#56676f] md:text-[18px]">Deploy specialized AI agents across sales, marketing, customer service, operations, finance, logistics, real estate, healthcare administration, education and enterprise workflows from one platform.</p>
-      <div className="mt-8 flex flex-wrap gap-3"><Button href="/catalog#catalog">Explore 50 AI Businesses <ArrowDownRight size={15} /></Button><Button href="/dashboard" tone="outline">Launch OneCore <span className="mono text-[9px] text-[#9a742d]">AI drafts</span></Button><Button href="/catalog#platform" tone="quiet">View Demo <span className="mono text-[9px] text-[#9a742d]">Phase 2</span></Button><a href={payoneerCheckoutUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1f6a56] px-4 py-2.5 text-[13px] font-bold text-white hover:bg-[#185744]" data-testid="button-pay-payoneer">Pay $70 <ExternalLink size={14} /></a></div>
+      <div className="mt-8 flex flex-wrap gap-3"><Button href="/catalog#catalog">Explore 50 AI Businesses <ArrowDownRight size={15} /></Button><Button href="/dashboard" tone="outline">Launch OneCore <span className="mono text-[9px] text-[#9a742d]">AI drafts</span></Button><Button href="/catalog#platform" tone="quiet">View Demo</Button><a href={payoneerCheckoutUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#1f6a56] px-4 py-2.5 text-[13px] font-bold text-white hover:bg-[#185744]" data-testid="button-pay-payoneer">Pay $70 <ExternalLink size={14} /></a></div>
           <div className="mt-10 flex items-center gap-6 border-t border-[#dce2dc] pt-5">
             <div><p className="display text-2xl font-semibold tracking-tight">50</p><p className="mono text-[9px] uppercase tracking-[.14em] text-[#758078]">Business modules</p></div>
             <div className="h-9 w-px bg-[#dce2dc]" />
