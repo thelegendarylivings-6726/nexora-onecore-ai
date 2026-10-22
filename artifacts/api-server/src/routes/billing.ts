@@ -14,18 +14,15 @@ router.get("/billing/status", requireAuth, async (req, res): Promise<void> => {
     .where(eq(subscriptionsTable.organizationId, workspace.id))
     .limit(1);
 
-  const now = new Date();
-  const active = !!subscription &&
-    subscription.status === "active" &&
-    (!subscription.currentPeriodEnd || subscription.currentPeriodEnd > now);
+  const active = subscription?.status === "active";
 
   res.json({
     configured: process.env.BILLING_PROVIDER !== undefined,
     active,
-    planCode: subscription?.planCode ?? "onecore_monthly",
+    planCode: subscription?.plan ?? "onecore_monthly",
     status: subscription?.status ?? "inactive",
-    currentPeriodEnd: subscription?.currentPeriodEnd?.toISOString() ?? null,
-    cancelAtPeriodEnd: subscription?.cancelAtPeriodEnd ?? false,
+    provider: subscription?.provider ?? null,
+    externalSubscriptionId: subscription?.externalSubscriptionId ?? null,
   });
 });
 
