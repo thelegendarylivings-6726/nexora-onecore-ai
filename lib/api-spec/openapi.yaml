@@ -161,13 +161,64 @@ paths:
               $ref: "#/components/schemas/CommandInput"
       responses:
         "200":
-          description: Command status; unavailable until AI is connected
+          description: AI response, proposed actions, or explicit provider-unavailable status
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CommandStatus"
         "401":
           description: Sign-in required
+        "429":
+          description: Command rate limit reached
+  /commands/approvals/pending:
+    get:
+      operationId: getPendingCommandApprovals
+      tags: [commands]
+      summary: List proposed command actions awaiting an administrator
+      responses:
+        "200":
+          description: Pending proposals in the signed-in organization
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CommandApproval"
+        "401":
+          description: Sign-in required
+  /commands/approvals/{approvalId}/decision:
+    post:
+      operationId: decideCommandApproval
+      tags: [commands]
+      summary: Approve or reject a proposed command
+      parameters:
+        - name: approvalId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommandDecisionInput"
+      responses:
+        "200":
+          description: Human review decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommandDecisionResult"
+        "401":
+          description: Sign-in required
+        "403":
+          description: Owner or administrator review required
+        "404":
+          description: Approval not found in this organization
+        "409":
+          description: Approval already reviewed
   /deployment-requests:
     post:
       operationId: createDeploymentRequest
@@ -305,10 +356,69 @@ components:
       properties:
         status:
           type: string
-          enum: [unavailable]
+          enum: [unavailable, pending_approval, completed]
         message:
           type: string
+        commandId:
+          type: ["string", "null"]
+          format: uuid
+        response:
+          type: ["string", "null"]
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommandAction"
       required: [status, message]
+    CommandAction:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+      required: [title, description]
+    CommandApproval:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        commandId:
+          type: string
+          format: uuid
+        prompt:
+          type: string
+        response:
+          type: string
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommandAction"
+        requestedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, commandId, prompt, response, actions, requestedBy, createdAt]
+    CommandDecisionInput:
+      type: object
+      properties:
+        decision:
+          type: string
+          enum: [approve, reject]
+      required: [decision]
+    CommandDecisionResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [approved, rejected]
+        message:
+          type: string
+      required: [id, status, message]
     DeploymentRequestInput:
       type: object
       properties:

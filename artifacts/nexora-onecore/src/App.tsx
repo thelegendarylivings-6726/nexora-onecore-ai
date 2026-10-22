@@ -12,12 +12,13 @@ import {
 } from 'lucide-react';
 import { Link, Redirect, Route, Router as WouterRouter, Switch, useLocation, useRoute } from 'wouter';
 import {
-  getGetDashboardActivityQueryKey, getGetDashboardSummaryQueryKey, getGetWorkspaceQueryKey,
+  getGetDashboardActivityQueryKey, getGetDashboardSummaryQueryKey, getGetPendingCommandApprovalsQueryKey, getGetWorkspaceQueryKey,
   getListBusinessesQueryKey, useActivateBusiness, useCreateDeploymentRequest,
-  useDeactivateBusiness, useGetDashboardActivity, useGetDashboardSummary, useGetWorkspace,
+  useDecideCommandApproval, useDeactivateBusiness, useGetDashboardActivity,
+  useGetDashboardSummary, useGetPendingCommandApprovals, useGetWorkspace,
   useListBusinesses, useSubmitCommand,
 } from '@workspace/api-client-react';
-import type { ActivityItem, Business, DashboardSummary } from '@workspace/api-client-react';
+import type { ActivityItem, Business, CommandApproval, CommandStatus, DashboardSummary } from '@workspace/api-client-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -199,7 +200,7 @@ function Home() {
           <div className="mono mb-6 inline-flex items-center gap-2 rounded-full border border-[#d5dfd7] bg-white/65 px-3 py-1.5 text-[10px] uppercase tracking-[.14em] text-[#356f5e]"><span className="h-1.5 w-1.5 rounded-full bg-[#d89b35]" /> NEXORA ONECORE AI</div>
           <h1 className="display max-w-[720px] text-[clamp(3.2rem,7.6vw,6.65rem)] font-semibold leading-[.94] tracking-[-.065em] text-[#172934]">50 AI Businesses.<br /><span className="text-[#24715b]">One Intelligent</span><br />Platform.</h1>
           <p className="mt-7 max-w-[560px] text-[16px] leading-7 text-[#56676f] md:text-[18px]">Deploy specialized AI agents across sales, marketing, customer service, operations, finance, logistics, real estate, healthcare administration, education and enterprise workflows from one platform.</p>
-      <div className="mt-8 flex flex-wrap gap-3"><Button href="/catalog#catalog">Explore 50 AI Businesses <ArrowDownRight size={15} /></Button><Button href="/dashboard" tone="outline">Launch AI Agent <span className="mono text-[9px] text-[#9a742d]">Phase 3</span></Button><Button href="/catalog#platform" tone="quiet">View Demo <span className="mono text-[9px] text-[#9a742d]">Phase 2</span></Button></div>
+      <div className="mt-8 flex flex-wrap gap-3"><Button href="/catalog#catalog">Explore 50 AI Businesses <ArrowDownRight size={15} /></Button><Button href="/dashboard" tone="outline">Launch OneCore <span className="mono text-[9px] text-[#9a742d]">AI drafts</span></Button><Button href="/catalog#platform" tone="quiet">View Demo <span className="mono text-[9px] text-[#9a742d]">Phase 2</span></Button></div>
           <div className="mt-10 flex items-center gap-6 border-t border-[#dce2dc] pt-5">
             <div><p className="display text-2xl font-semibold tracking-tight">50</p><p className="mono text-[9px] uppercase tracking-[.14em] text-[#758078]">Business modules</p></div>
             <div className="h-9 w-px bg-[#dce2dc]" />
@@ -223,7 +224,7 @@ function Home() {
                 <div className="flex flex-col items-center gap-2 text-[#b08a42]"><span className="h-px w-full bg-[#d9c292]" /><div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ddc890] bg-[#fbf4e1]"><Zap size={19} /></div><span className="h-px w-full bg-[#d9c292]" /></div>
                 <div className="rounded-xl border border-[#2e705d] bg-[#1f6a56] p-4 text-white shadow-[0_12px_30px_rgba(31,106,86,.2)]">
                   <div className="mb-4 flex items-center gap-2"><div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15"><Bot size={17} /></div><span className="display text-[11px] font-bold tracking-wide">ONECORE</span></div>
-                  <div className="space-y-2"><div className="h-1.5 w-full rounded bg-white/25" /><div className="h-1.5 w-4/5 rounded bg-white/25" /><div className="mt-4 flex items-center gap-1.5 text-[9px] text-[#d2e8d8]"><span className="h-1.5 w-1.5 rounded-full bg-[#e3b24b]" /> AI routing — Phase 3</div></div>
+                  <div className="space-y-2"><div className="h-1.5 w-full rounded bg-white/25" /><div className="h-1.5 w-4/5 rounded bg-white/25" /><div className="mt-4 flex items-center gap-1.5 text-[9px] text-[#d2e8d8]"><span className="h-1.5 w-1.5 rounded-full bg-[#e3b24b]" /> AI drafts · admin review</div></div>
                 </div>
               </div>
               <div className="mt-5 flex items-center justify-between border-t border-[#e2e5dd] pt-4"><span className="mono text-[9px] uppercase tracking-[.12em] text-[#78837c]">Browse now · enable modules after sign-in</span><ArrowRight size={15} className="text-[#1f6a56]" /></div>
@@ -239,7 +240,7 @@ function Home() {
           <div className="grid gap-2 sm:grid-cols-3">
             <Availability phase="Live now" title="Catalog browsing" text="Browse all 50 modules and their published details." active />
             <Availability phase="Phase 2" title="Flagship workflows" text="Module demos and operational workflows are not live." />
-            <Availability phase="Phase 3 / 6" title="AI & billing" text="AI routing and pricing are not available yet." />
+            <Availability phase="Review-gated" title="OneCore commands" text="AI drafts require a configured integration. Proposed actions need owner or administrator review; external execution is not available." />
           </div>
         </div>
       </section>
@@ -316,7 +317,7 @@ function WorkspaceLayout({ children, active }: { children: ReactNode; active: st
       <div className="mt-9 rounded-lg border border-white/10 bg-white/[.04] px-3 py-3"><p className="mono text-[8px] uppercase tracking-[.15em] text-[#98aaa2]">ACTIVE WORKSPACE</p><p className="mt-1 truncate text-[12px] font-bold">{workspace?.name ?? 'Workspace'}</p><p className="mt-1 text-[10px] capitalize text-[#aab6b1]">{workspace?.role ?? 'Loading role'}</p></div>
       <p className="mono mb-2 mt-8 px-2 text-[9px] uppercase tracking-[.14em] text-[#80958c]">OPERATE</p>
       <nav className="space-y-1">{navItems.map((item) => <Link key={item.href} href={item.href} className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-[12px] font-semibold transition-colors ${active === item.label ? 'bg-[#2c4d47] text-[#f1d28a]' : 'text-[#c0cbc5] hover:bg-white/[.06] hover:text-white'}`} data-testid={`nav-${item.label.toLowerCase().replaceAll(' ', '-')}`}>{item.icon}{item.label}</Link>)}</nav>
-      <div className="mt-auto rounded-lg border border-[#526e66]/55 bg-[#27443f] p-3"><p className="flex items-center gap-2 text-[11px] font-bold text-[#efdcab]"><Sparkles size={14} /> Runtime readiness</p><p className="mt-2 text-[10px] leading-4 text-[#c2d0c7]">Catalog live · workflows Phase 2 · AI routing Phase 3</p></div>
+      <div className="mt-auto rounded-lg border border-[#526e66]/55 bg-[#27443f] p-3"><p className="flex items-center gap-2 text-[11px] font-bold text-[#efdcab]"><Sparkles size={14} /> Runtime readiness</p><p className="mt-2 text-[10px] leading-4 text-[#c2d0c7]">Catalog live · AI drafts review-gated · workflows phased</p></div>
       <button onClick={() => signOut({ redirectUrl: basePath || '/' })} className="mt-4 flex items-center gap-2 rounded-lg px-3 py-2 text-left text-[11px] text-[#b2c0ba] hover:bg-white/[.06]" data-testid="button-workspace-sign-out"><LogOut size={15} /> Sign out</button>
     </aside>
     <div className="min-w-0 flex-1">
@@ -350,27 +351,59 @@ const metrics: { key: keyof DashboardSummary; label: string; icon: React.ReactNo
 function Dashboard() {
   const [command, setCommand] = useState('');
   const [commandNotice, setCommandNotice] = useState('');
+  const [commandResult, setCommandResult] = useState<CommandStatus | null>(null);
+  const [approvalNotice, setApprovalNotice] = useState('');
   const client = useQueryClient();
   const { isSignedIn } = useUser();
   const { data: workspace, isLoading: workspaceLoading, isError: workspaceError, refetch: refetchWorkspace } = useGetWorkspace({ query: { queryKey: getGetWorkspaceQueryKey(), retry: false, enabled: !!isSignedIn } });
   const summaryQ = useGetDashboardSummary({ query: { queryKey: getGetDashboardSummaryQueryKey(), enabled: !!workspace } });
   const activityQ = useGetDashboardActivity({ query: { queryKey: getGetDashboardActivityQueryKey(), enabled: !!workspace } });
+  const approvalsQ = useGetPendingCommandApprovals({ query: { queryKey: getGetPendingCommandApprovalsQueryKey(), enabled: !!workspace } });
   const submitCommand = useSubmitCommand();
+  const decideApproval = useDecideCommandApproval();
   const summary = summaryQ.data as DashboardSummary | undefined;
   const groups = [...new Set(metrics.map((metric) => metric.group))];
   async function sendCommand(e: FormEvent) {
     e.preventDefault();
     if (!command.trim()) return;
     setCommandNotice('');
+    setCommandResult(null);
     submitCommand.mutate({ data: { prompt: command.trim() } }, {
       onSuccess: (result) => {
-        setCommandNotice(`${result.status === 'unavailable' ? 'Unavailable — ' : ''}${result.message}`);
+        setCommandResult(result);
+        setCommand('');
+        void client.invalidateQueries({ queryKey: getGetDashboardSummaryQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetDashboardActivityQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetPendingCommandApprovalsQueryKey() });
+      },
+      onError: (error) => {
+        const status = (error as { status?: number }).status;
+        setCommandNotice(status === 429
+          ? 'Command limit reached. Wait before submitting another command.'
+          : status === 502
+            ? 'OneCore could not prepare a reliable response. No actions were executed.'
+            : 'Command could not be submitted. Try again.');
+      },
+    });
+  }
+  function reviewCommand(approvalId: string, decision: 'approve' | 'reject') {
+    setApprovalNotice('');
+    decideApproval.mutate({ approvalId, data: { decision } }, {
+      onSuccess: (result) => {
+        setApprovalNotice(result.message);
+        void client.invalidateQueries({ queryKey: getGetPendingCommandApprovalsQueryKey() });
         void client.invalidateQueries({ queryKey: getGetDashboardSummaryQueryKey() });
         void client.invalidateQueries({ queryKey: getGetDashboardActivityQueryKey() });
       },
-      onError: () => setCommandNotice('Command could not be submitted. Try again.'),
+      onError: (error) => {
+        const status = (error as { status?: number }).status;
+        setApprovalNotice(status === 403
+          ? 'Only an organization owner or administrator can review this proposal.'
+          : 'The proposal could not be reviewed. Refresh and try again.');
+      },
     });
   }
+  const canReviewCommands = workspace?.role === 'owner' || workspace?.role === 'admin';
   return <SignedGate><WorkspaceLayout active="Overview">
     {workspaceLoading ? <div className="space-y-4"><div className="h-8 w-64 animate-pulse rounded bg-[#e2e7df]" /><div className="grid gap-3 md:grid-cols-3">{[1,2,3].map((n) => <div key={n} className="h-28 animate-pulse rounded-xl bg-white" />)}</div></div>
     : workspaceError || !workspace ? <RetryPanel title="Workspace unavailable" text="We couldn't load the signed-in workspace. Try again; the API controls access." onRetry={() => void refetchWorkspace()} />
@@ -391,10 +424,15 @@ function Dashboard() {
       {summaryQ.isError && <RetryPanel title="Metrics couldn't load" text="Metrics are persisted workspace counts. Nothing is estimated or filled in." onRetry={() => void summaryQ.refetch()} />}
       <div className="grid gap-4 lg:grid-cols-[1.25fr_.75fr]">
         <section className="rounded-xl border border-[#dce2da] bg-white p-5 md:p-6">
-          <div className="flex items-start justify-between"><div><p className="mono text-[9px] uppercase tracking-[.15em] text-[#9c7939]">CONTROL / NATURAL LANGUAGE</p><h2 className="display mt-1 text-xl font-semibold">Issue a command</h2><p className="mt-1 text-[11px] text-[#718078]">Routing is not active. The command endpoint returns an explicit unavailable status.</p></div><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f5eddc] text-[#9a742d]"><Command size={17} /></div></div>
+          <div className="flex items-start justify-between"><div><p className="mono text-[9px] uppercase tracking-[.15em] text-[#9c7939]">CONTROL / NATURAL LANGUAGE</p><h2 className="display mt-1 text-xl font-semibold">Ask OneCore</h2><p className="mt-1 text-[11px] text-[#718078]">OneCore drafts administrative responses. Proposed actions require owner or administrator review; no external action runs here.</p></div><div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f5eddc] text-[#9a742d]"><Command size={17} /></div></div>
           <form className="mt-5" onSubmit={sendCommand}><label htmlFor="command-entry" className="sr-only">Command</label><div className="flex flex-col gap-2 sm:flex-row"><input id="command-entry" value={command} onChange={(e) => setCommand(e.target.value)} maxLength={4000} placeholder="Describe the work you want OneCore to coordinate…" className="h-11 min-w-0 flex-1 rounded-lg border border-[#dce2da] bg-[#fafaf7] px-3 text-[12px] outline-none focus:border-[#4f8b77]" data-testid="input-command" /><button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#1f6a56] px-4 text-[12px] font-bold text-white disabled:opacity-50" type="submit" disabled={!command.trim() || submitCommand.isPending} data-testid="button-submit-command">{submitCommand.isPending ? 'Submitting…' : 'Submit command'} <ArrowRight size={14} /></button></div></form>
-          <div className="mt-3 rounded-lg border border-[#eadfbe] bg-[#fcf7e9] px-3 py-2.5"><p className="flex items-center gap-2 text-[10px] font-bold text-[#785d2c]"><CircleHelp size={14} /> AI integration required · Phase 3</p><p className="mt-1 text-[10px] leading-4 text-[#7c725c]">Submitting calls the command endpoint; it does not produce or simulate AI output.</p></div>
-          {commandNotice && <p role="status" className="mt-3 rounded-lg border border-[#cbded0] bg-[#edf5ed] px-3 py-2 text-[11px] font-semibold text-[#315c49]" data-testid="status-command">{commandNotice}</p>}
+          <div className="mt-3 rounded-lg border border-[#eadfbe] bg-[#fcf7e9] px-3 py-2.5"><p className="flex items-center gap-2 text-[10px] font-bold text-[#785d2c]"><CircleHelp size={14} /> Administrative assistance only</p><p className="mt-1 text-[10px] leading-4 text-[#7c725c]">Health, finance, and legal workflows do not provide licensed decisions. Proposed actions are reviewed before any connected workflow can act.</p></div>
+          {commandNotice && <p role="status" className="mt-3 rounded-lg border border-[#e6c7c2] bg-[#fff7f4] px-3 py-2 text-[11px] font-semibold text-[#563d3b]" data-testid="status-command">{commandNotice}</p>}
+          {commandResult && <div role="status" className={`mt-3 rounded-lg border px-3 py-3 ${commandResult.status === 'unavailable' ? 'border-[#eadfbe] bg-[#fcf7e9]' : 'border-[#cbded0] bg-[#edf5ed]'}`} data-testid="status-command">
+            <p className={`text-[11px] font-bold ${commandResult.status === 'unavailable' ? 'text-[#785d2c]' : 'text-[#315c49]'}`}>{commandResult.message}</p>
+            {commandResult.response && <p className="mt-2 whitespace-pre-wrap text-[11px] leading-5 text-[#40554a]">{commandResult.response}</p>}
+            {!!commandResult.actions?.length && <div className="mt-3 space-y-2">{commandResult.actions.map((action, index) => <div key={`${action.title}-${index}`} className="rounded-lg border border-[#d5e3d5] bg-white/80 px-3 py-2"><p className="text-[10px] font-bold text-[#304d40]">{action.title}</p><p className="mt-1 text-[10px] leading-4 text-[#66766b]">{action.description}</p></div>)}</div>}
+          </div>}
         </section>
         <section className="rounded-xl border border-[#dce2da] bg-white p-5 md:p-6">
           <div className="flex items-start justify-between"><div><p className="mono text-[9px] uppercase tracking-[.15em] text-[#9c7939]">RECENT EVENTS</p><h2 className="display mt-1 text-xl font-semibold">Workspace activity</h2></div><Activity size={17} className="text-[#3b7864]" /></div>
@@ -404,9 +442,29 @@ function Dashboard() {
           : <div className="mt-5 rounded-lg border border-dashed border-[#d7dfd8] bg-[#fafbf7] px-4 py-8 text-center"><div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-[#e9efe8] text-[#38735e]"><Activity size={16} /></div><p className="mt-3 text-[12px] font-bold">No activity recorded</p><p className="mt-1 text-[10px] text-[#78847e]">Events appear here when the workspace API records them.</p></div>}
         </section>
       </div>
+      <section className="mt-4 rounded-xl border border-[#dce2da] bg-white p-5 md:p-6" data-testid="section-command-approvals">
+        <div className="flex items-start justify-between gap-3"><div><p className="mono text-[9px] uppercase tracking-[.15em] text-[#9c7939]">HUMAN REVIEW</p><h2 className="display mt-1 text-xl font-semibold">Proposed actions</h2><p className="mt-1 text-[11px] text-[#718078]">Review the full proposal before recording a decision. Approval does not run external actions.</p></div><BadgeCheck size={18} className="text-[#3b7864]" /></div>
+        {approvalNotice && <p role="status" className="mt-3 rounded-lg border border-[#cbded0] bg-[#edf5ed] px-3 py-2 text-[11px] font-semibold text-[#315c49]">{approvalNotice}</p>}
+        {approvalsQ.isLoading ? <div className="mt-4 h-20 animate-pulse rounded-lg bg-[#f0f2ed]" />
+          : approvalsQ.isError ? <div className="mt-4"><RetryPanel title="Proposals unavailable" text="Pending approvals could not be loaded." onRetry={() => void approvalsQ.refetch()} /></div>
+          : approvalsQ.data?.length ? <div className="mt-4 space-y-3">{approvalsQ.data.map((approval) => <CommandApprovalCard key={approval.id} approval={approval} canReview={canReviewCommands} disabled={decideApproval.isPending} onDecision={reviewCommand} />)}</div>
+          : <p className="mt-4 rounded-lg border border-dashed border-[#d7dfd8] bg-[#fafbf7] px-4 py-6 text-center text-[11px] text-[#718078]">No proposed actions are awaiting review.</p>}
+      </section>
       <EnabledModules enabled={workspace.enabledBusinesses} />
     </div>}
   </WorkspaceLayout></SignedGate>;
+}
+
+function CommandApprovalCard({ approval, canReview, disabled, onDecision }: { approval: CommandApproval; canReview: boolean; disabled: boolean; onDecision: (id: string, decision: 'approve' | 'reject') => void }) {
+  const createdAt = new Date(approval.createdAt);
+  return <article className="rounded-lg border border-[#e0e5dd] bg-[#fbfcf8] p-4" data-testid={`command-approval-${approval.id}`}>
+    <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-start"><div><p className="text-[12px] font-bold text-[#2b3c40]">{approval.actions.length} proposed {approval.actions.length === 1 ? 'action' : 'actions'}</p><p className="mt-1 text-[9px] text-[#7d8981]">Requested by a workspace member · {Number.isNaN(createdAt.getTime()) ? '' : createdAt.toLocaleString()}</p></div><span className="mono w-fit rounded-full bg-[#f4eddc] px-2.5 py-1 text-[8px] uppercase tracking-[.1em] text-[#795f30]">Awaiting review</span></div>
+    <div className="mt-3 rounded-md border border-[#e8ece5] bg-white px-3 py-2"><p className="mono text-[8px] uppercase tracking-[.12em] text-[#89948b]">REQUEST</p><p className="mt-1 whitespace-pre-wrap text-[10px] leading-4 text-[#586861]">{approval.prompt}</p></div>
+    <p className="mt-3 whitespace-pre-wrap text-[11px] leading-5 text-[#40554a]">{approval.response}</p>
+    <div className="mt-3 space-y-2">{approval.actions.map((action, index) => <div key={`${action.title}-${index}`} className="rounded-md border border-[#dce5dc] bg-white px-3 py-2"><p className="text-[10px] font-bold text-[#304d40]">{action.title}</p><p className="mt-1 text-[10px] leading-4 text-[#66766b]">{action.description}</p></div>)}</div>
+    {canReview ? <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={disabled} onClick={() => onDecision(approval.id, 'approve')} className="rounded-lg bg-[#1f6a56] px-3 py-2 text-[10px] font-bold text-white disabled:opacity-50" data-testid={`button-approve-${approval.id}`}>Approve proposal</button><button type="button" disabled={disabled} onClick={() => onDecision(approval.id, 'reject')} className="rounded-lg border border-[#d9c9c5] bg-white px-3 py-2 text-[10px] font-bold text-[#89514b] disabled:opacity-50" data-testid={`button-reject-${approval.id}`}>Reject proposal</button></div>
+      : <p className="mt-3 rounded-md bg-[#f4f1e8] px-3 py-2 text-[10px] text-[#746748]">An organization owner or administrator must review this proposal.</p>}
+  </article>;
 }
 
 function ActivityRow({ item }: { item: ActivityItem }) {
@@ -484,7 +542,7 @@ function requestDeployment(e: FormEvent) {
             </div>
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-[1fr_.85fr]">
-            <div className="rounded-xl border border-[#dfd3b4] bg-[#fbf6e8] p-5"><div className="flex items-start gap-3"><div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#f1e5c6] text-[#916f2f]"><CircleHelp size={17} /></div><div><p className="text-[12px] font-bold text-[#4d4534]">Operational workflows are not live</p><p className="mt-1 text-[11px] leading-5 text-[#786f5b]">{business.phase === 'flagship' ? 'Flagship demos and workflows are planned for Phase 2.' : 'This module is catalog-only today; operational workflows are not available.'} AI routing is Phase 3. Catalog browsing is the only live capability across all 50 modules.</p></div></div></div>
+            <div className="rounded-xl border border-[#dfd3b4] bg-[#fbf6e8] p-5"><div className="flex items-start gap-3"><div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#f1e5c6] text-[#916f2f]"><CircleHelp size={17} /></div><div><p className="text-[12px] font-bold text-[#4d4534]">Operational workflows are not live</p><p className="mt-1 text-[11px] leading-5 text-[#786f5b]">{business.phase === 'flagship' ? 'Flagship demos and workflows are planned for Phase 2.' : 'This module is catalog-only today; operational workflows are not available.'} OneCore command drafts use a separate, review-gated workflow. This module does not execute actions.</p></div></div></div>
             {isSignedIn
               ? <form onSubmit={requestDeployment} className="rounded-xl border border-[#dce2da] bg-white p-5"><div className="flex items-center justify-between"><div><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">DEPLOYMENT SUPPORT</p><p className="mt-1 text-[12px] font-bold">Request deployment assistance</p></div><ExternalLink size={16} className="text-[#658072]" /></div><textarea value={requestMessage} onChange={(e) => setRequestMessage(e.target.value)} maxLength={2000} rows={2} placeholder="Optional context for your request" className="mt-3 w-full resize-y rounded-lg border border-[#dce2da] bg-[#fafaf7] p-3 text-[11px] outline-none focus:border-[#4f8b77]" data-testid="input-deployment-message" /><Button className="mt-3 w-full" disabled={deployment.isPending}>{deployment.isPending ? 'Submitting request…' : 'Submit request'} <ArrowRight size={14} /></Button><p className="mt-2 text-[9px] leading-4 text-[#88928a]">Request submission is recorded in this workspace; it does not activate a workflow. Pricing and billing are Phase 6.</p></form>
               : <div className="rounded-xl border border-[#dce2da] bg-white p-5"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">DEPLOYMENT SUPPORT</p><p className="mt-1 text-[12px] font-bold">Request deployment assistance</p><p className="mt-2 text-[10px] leading-4 text-[#718078]">Sign in to record a deployment request for your organization.</p><Button href="/sign-in" className="mt-4 w-full">Sign in to request help <ArrowRight size={14} /></Button></div>}
@@ -504,7 +562,7 @@ function Admin() {
     : <div className="enter"><p className="mono text-[9px] uppercase tracking-[.18em] text-[#a37b36]">ORGANIZATION CONTROL / 02</p><h1 className="display mt-2 text-4xl font-semibold tracking-[-.045em]">Organization settings</h1><p className="mt-2 text-[13px] text-[#68757a]">Workspace identity and module configuration at a glance.</p>
       <section className="mt-7 grid gap-4 md:grid-cols-[1.1fr_.9fr]">
         <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">WORKSPACE PROFILE</p><div className="mt-5 flex items-center gap-4"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#e8eee7] text-[#286d57]"><Building2 size={21} /></div><div><h2 className="display text-xl font-semibold">{workspace.name}</h2><p className="mt-1 text-[11px] text-[#77837d]">Workspace ID <span className="mono">{workspace.id}</span></p></div></div><div className="mt-5 flex items-center justify-between border-t border-[#e8ebe5] pt-4"><span className="text-[11px] text-[#647078]">Your permission</span><span className="rounded-full bg-[#e8efe8] px-3 py-1 text-[10px] font-bold capitalize text-[#316e58]">{workspace.role}</span></div></div>
-        <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">CAPABILITY READINESS</p><div className="mt-4 space-y-3"><Readiness label="Browse business catalog" phase="LIVE" /><Readiness label="Flagship workflows & demos" phase="PHASE 2" /><Readiness label="AI routing" phase="PHASE 3" /><Readiness label="Pricing & billing" phase="PHASE 6" /></div><p className="mt-4 text-[10px] leading-4 text-[#87918a]">Only catalog browsing is available across all modules. Phased capabilities are not represented as live.</p></div>
+        <div className="rounded-xl border border-[#dce2da] bg-white p-6"><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">CAPABILITY READINESS</p><div className="mt-4 space-y-3"><Readiness label="Browse business catalog" phase="LIVE" /><Readiness label="Flagship workflows & demos" phase="PHASE 2" /><Readiness label="OneCore AI command drafts" phase="REVIEW-GATED" /><Readiness label="Pricing & billing" phase="PHASE 6" /></div><p className="mt-4 text-[10px] leading-4 text-[#87918a]">Business modules remain catalog-only. OneCore drafts require a configured AI integration; proposed actions require owner or administrator review.</p></div>
       </section>
       <div className="mt-4 rounded-xl border border-[#dce2da] bg-white p-6"><div className="flex items-center justify-between"><div><p className="mono text-[9px] uppercase tracking-[.14em] text-[#9c7939]">ENABLED CONFIGURATION</p><h2 className="display mt-1 text-xl font-semibold">Business modules</h2></div><Link href="/catalog#catalog" className="text-[11px] font-bold text-[#286e59]">Browse modules <ArrowRight className="ml-1 inline" size={13} /></Link></div><p className="mt-3 text-[11px] text-[#718078]">{workspace.enabledBusinesses.length} modules enabled in this workspace. Manage module access from its catalog detail page.</p><div className="mt-4 flex flex-wrap gap-2">{workspace.enabledBusinesses.length ? workspace.enabledBusinesses.map((slug) => <Link href={`/business/${slug}`} key={slug} className="rounded-lg border border-[#dce3da] bg-[#f8faf6] px-3 py-2 text-[10px] font-semibold text-[#43554f]">{slug}<ArrowUpRight className="ml-1 inline" size={12} /></Link>) : <span className="rounded-lg border border-dashed border-[#d5ddd5] px-4 py-3 text-[11px] text-[#7b877f]">No enabled modules</span>}</div></div>
     </div>}

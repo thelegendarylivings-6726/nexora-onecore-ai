@@ -78,10 +78,58 @@ export type CommandStatusStatus = typeof CommandStatusStatus[keyof typeof Comman
 
 export const CommandStatusStatus = {
   unavailable: 'unavailable',
+  pending_approval: 'pending_approval',
+  completed: 'completed',
 } as const;
+
+export interface CommandAction {
+  title: string;
+  description: string;
+}
 
 export interface CommandStatus {
   status: CommandStatusStatus;
+  message: string;
+  /** @nullable */
+  commandId?: string | null;
+  /** @nullable */
+  response?: string | null;
+  actions?: CommandAction[];
+}
+
+export interface CommandApproval {
+  id: string;
+  commandId: string;
+  prompt: string;
+  response: string;
+  actions: CommandAction[];
+  requestedBy: string;
+  createdAt: string;
+}
+
+export type CommandDecisionInputDecision = typeof CommandDecisionInputDecision[keyof typeof CommandDecisionInputDecision];
+
+
+export const CommandDecisionInputDecision = {
+  approve: 'approve',
+  reject: 'reject',
+} as const;
+
+export interface CommandDecisionInput {
+  decision: CommandDecisionInputDecision;
+}
+
+export type CommandDecisionResultStatus = typeof CommandDecisionResultStatus[keyof typeof CommandDecisionResultStatus];
+
+
+export const CommandDecisionResultStatus = {
+  approved: 'approved',
+  rejected: 'rejected',
+} as const;
+
+export interface CommandDecisionResult {
+  id: string;
+  status: CommandDecisionResultStatus;
   message: string;
 }
 

@@ -4,6 +4,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
@@ -72,12 +73,57 @@ export const workflowsTable = pgTable("workflows", {
     .defaultNow(),
 });
 
+export type CommandAction = {
+  title: string;
+  description: string;
+};
+
+export const commandRunsTable = pgTable("command_runs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .references(() => organizationsTable.id, { onDelete: "cascade" }),
+  requestedBy: text("requested_by").notNull(),
+  prompt: text("prompt").notNull(),
+  response: text("response"),
+  proposedActions: jsonb("proposed_actions")
+    .$type<CommandAction[]>()
+    .notNull()
+    .default([]),
+  status: text("status")
+    .$type<
+      | "generating"
+      | "pending_approval"
+      | "completed"
+      | "approved"
+      | "rejected"
+      | "failed"
+    >()
+    .notNull()
+    .default("generating"),
+  inputTokens: integer("input_tokens").notNull().default(0),
+  outputTokens: integer("output_tokens").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+});
+
 export const approvalsTable = pgTable("approvals", {
   id: uuid("id").defaultRandom().primaryKey(),
   organizationId: uuid("organization_id")
     .notNull()
     .references(() => organizationsTable.id, { onDelete: "cascade" }),
   taskId: uuid("task_id").references(() => tasksTable.id, { onDelete: "set null" }),
+  commandRunId: uuid("command_run_id").references(() => commandRunsTable.id, {
+    onDelete: "cascade",
+  }),
+  requestedBy: text("requested_by"),
+  reviewedBy: text("reviewed_by"),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
   title: text("title").notNull(),
   status: text("status")
     .$type<"required" | "approved" | "rejected">()
@@ -86,7 +132,9 @@ export const approvalsTable = pgTable("approvals", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
-});
+}, (table) => [
+  uniqueIndex("approvals_command_run_id_unique").on(table.commandRunId),
+]);
 
 export const deploymentRequestsTable = pgTable("deployment_requests", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -154,6 +202,7 @@ export const usageRecordsTable = pgTable("usage_records", {
   organizationId: uuid("organization_id")
     .notNull()
     .references(() => organizationsTable.id, { onDelete: "cascade" }),
+  actorClerkUserId: text("actor_clerk_user_id"),
   metric: text("metric").notNull(),
   quantity: integer("quantity").notNull().default(0),
   recordedAt: timestamp("recorded_at", { withTimezone: true })
@@ -178,6 +227,11 @@ export const insertWorkflowSchema = createInsertSchema(workflowsTable).omit({
   id: true,
   createdAt: true,
 });
+export const insertCommandRunSchema = createInsertSchema(commandRunsTable).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
 export const insertApprovalSchema = createInsertSchema(approvalsTable).omit({
   id: true,
   createdAt: true,
@@ -200,5 +254,6 @@ export const insertUsageRecordSchema = createInsertSchema(usageRecordsTable).omi
   id: true,
   recordedAt: true,
 });
+export type CommandRun = typeof commandRunsTable.$inferSelect;
 export type Task = typeof tasksTable.$inferSelect;
 export type InsertTask = z.infer<typeof insertTaskSchema>;

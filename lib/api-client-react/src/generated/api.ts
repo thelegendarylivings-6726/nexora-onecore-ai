@@ -22,6 +22,9 @@ import type {
 import type {
   ActivityItem,
   Business,
+  CommandApproval,
+  CommandDecisionInput,
+  CommandDecisionResult,
   CommandInput,
   CommandStatus,
   DashboardSummary,
@@ -686,6 +689,172 @@ export const useSubmitCommand = <TError = ErrorType<void>,
         TContext
       > => {
       return useMutation(getSubmitCommandMutationOptions(options));
+    }
+
+export const getGetPendingCommandApprovalsUrl = () => {
+
+
+
+
+  return `/api/commands/approvals/pending`
+}
+
+/**
+ * @summary List proposed command actions awaiting an administrator
+ */
+export const getPendingCommandApprovals = async ( options?: Parameters<typeof customFetch>[1]): Promise<CommandApproval[]> => {
+
+  return customFetch<CommandApproval[]>(getGetPendingCommandApprovalsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPendingCommandApprovalsQueryKey = () => {
+    return [
+    `/api/commands/approvals/pending`
+    ] as const;
+    }
+
+
+export const getGetPendingCommandApprovalsQueryOptions = <TData = Awaited<ReturnType<typeof getPendingCommandApprovals>>, TError = ErrorType<void>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPendingCommandApprovals>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPendingCommandApprovalsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPendingCommandApprovals>>> = ({ signal }) => getPendingCommandApprovals({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPendingCommandApprovals>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPendingCommandApprovalsQueryResult = NonNullable<Awaited<ReturnType<typeof getPendingCommandApprovals>>>
+export type GetPendingCommandApprovalsQueryError = ErrorType<void>
+
+
+/**
+ * @summary List proposed command actions awaiting an administrator
+ */
+
+export function useGetPendingCommandApprovals<TData = Awaited<ReturnType<typeof getPendingCommandApprovals>>, TError = ErrorType<void>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPendingCommandApprovals>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPendingCommandApprovalsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getDecideCommandApprovalUrl = (approvalId: string,) => {
+
+
+
+
+  return `/api/commands/approvals/${approvalId}/decision`
+}
+
+/**
+ * @summary Approve or reject a proposed command
+ */
+export const decideCommandApproval = async (approvalId: string,
+    commandDecisionInput: CommandDecisionInput, options?: Parameters<typeof customFetch>[1]): Promise<CommandDecisionResult> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<CommandDecisionResult>(getDecideCommandApprovalUrl(approvalId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(commandDecisionInput)
+  }
+);}
+
+
+
+
+
+export const getDecideCommandApprovalMutationKey = () => ['decideCommandApproval'] as const;
+
+export const getDecideCommandApprovalMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decideCommandApproval>>, TError,DecideCommandApprovalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof decideCommandApproval>>, TError,DecideCommandApprovalMutationVariables, TContext> => {
+
+const mutationKey = getDecideCommandApprovalMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof decideCommandApproval>>, DecideCommandApprovalMutationVariables> = (props) => {
+          const {approvalId,data} = props ?? {};
+
+          return  decideCommandApproval(approvalId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DecideCommandApprovalMutationResult = NonNullable<Awaited<ReturnType<typeof decideCommandApproval>>>
+    export type DecideCommandApprovalMutationBody = BodyType<CommandDecisionInput>
+    export type DecideCommandApprovalMutationError = ErrorType<void>
+    export type DecideCommandApprovalMutationVariables = {approvalId: string;data: BodyType<CommandDecisionInput>}
+
+    /**
+ * @summary Approve or reject a proposed command
+ */
+export const useDecideCommandApproval = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof decideCommandApproval>>, TError,DecideCommandApprovalMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof decideCommandApproval>>,
+        TError,
+        DecideCommandApprovalMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDecideCommandApprovalMutationOptions(options));
     }
 
 export const getCreateDeploymentRequestUrl = () => {

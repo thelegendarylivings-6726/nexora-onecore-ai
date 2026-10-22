@@ -1,1 +1,2 @@
 - [Drizzle push failures](drizzle-push-quirks.md) — a failed schema push may leave empty tables behind; inspect the live schema before retrying.
+- [OneCore AI provider setup](onecore-ai-provider.md) — use Replit AI Integrations variables; keep commands unavailable and prompts unstored when configuration is missing.

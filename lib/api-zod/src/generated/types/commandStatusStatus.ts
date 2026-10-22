@@ -11,4 +11,6 @@ export type CommandStatusStatus = typeof CommandStatusStatus[keyof typeof Comman
 
 export const CommandStatusStatus = {
   unavailable: 'unavailable',
+  pending_approval: 'pending_approval',
+  completed: 'completed',
 } as const;

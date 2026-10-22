@@ -122,7 +122,49 @@ export const SubmitCommandBody = zod.object({
 })
 
 export const SubmitCommandResponse = zod.object({
-  "status": zod.enum(['unavailable']),
+  "status": zod.enum(['unavailable', 'pending_approval', 'completed']),
+  "message": zod.string(),
+  "commandId": zod.string().uuid().nullish(),
+  "response": zod.string().nullish(),
+  "actions": zod.array(zod.object({
+  "title": zod.string(),
+  "description": zod.string()
+})).optional()
+})
+
+
+/**
+ * @summary List proposed command actions awaiting an administrator
+ */
+export const GetPendingCommandApprovalsResponseItem = zod.object({
+  "id": zod.string().uuid(),
+  "commandId": zod.string().uuid(),
+  "prompt": zod.string(),
+  "response": zod.string(),
+  "actions": zod.array(zod.object({
+  "title": zod.string(),
+  "description": zod.string()
+})),
+  "requestedBy": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const GetPendingCommandApprovalsResponse = zod.array(GetPendingCommandApprovalsResponseItem)
+
+
+/**
+ * @summary Approve or reject a proposed command
+ */
+export const DecideCommandApprovalParams = zod.object({
+  "approvalId": zod.coerce.string().uuid()
+})
+
+export const DecideCommandApprovalBody = zod.object({
+  "decision": zod.enum(['approve', 'reject'])
+})
+
+export const DecideCommandApprovalResponse = zod.object({
+  "id": zod.string().uuid(),
+  "status": zod.enum(['approved', 'rejected']),
   "message": zod.string()
 })
 

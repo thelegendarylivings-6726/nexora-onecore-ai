@@ -5,9 +5,15 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { CommandAction } from './commandAction';
 import type { CommandStatusStatus } from './commandStatusStatus';
 
 export interface CommandStatus {
   status: CommandStatusStatus;
   message: string;
+  /** @nullable */
+  commandId?: string | null;
+  /** @nullable */
+  response?: string | null;
+  actions?: CommandAction[];
 }
